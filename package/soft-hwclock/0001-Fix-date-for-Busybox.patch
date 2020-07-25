@@ -1,0 +1,41 @@
+From 5fdb1ba5147cf9e070514fcba45a8599dcd3dea2 Mon Sep 17 00:00:00 2001
+From: Huan Truong <htruong@tnhh.net>
+Date: Sat, 25 Jul 2020 10:29:14 -0700
+Subject: [PATCH 1/1] Fix date for Busybox
+
+---
+ soft-hwclock | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/soft-hwclock b/soft-hwclock
+index 70fe386..be82787 100644
+--- a/soft-hwclock
++++ b/soft-hwclock
+@@ -1,19 +1,17 @@
+ #!/bin/sh
+ 
+-# Get the saved time (or empty) and clock time, in RFC399 format
++# Get the saved time (or empty) and clock time
+ # This format sorts lexicographically
+ 
+-CLOCKFILE="/opt/soft-hwclock/soft-hwclock.data"
+-CTIME=$(date --rfc-3339=seconds)
+-FTIME=$(test -f "${CLOCKFILE}" && cat "${CLOCKFILE}")
++CLOCKFILE="/var/soft-hwclock.data"
++CTIME=$(date '+%s')
++FTIME=$(test -f "${CLOCKFILE}" && cat "${CLOCKFILE}" || echo 1595698061)
+ 
+ # if the file time is in the future, use that
+ setclock() {
+ 	if expr "${FTIME}" \> "${CTIME}" ; then
+ 		echo "loading saved time ${FTIME} over ${CTIME}"
+-		date --set="${FTIME}"
+-		#date --date="${FTIME}"
+-		#echo would set clock to $FTIME
++		date -s "@${FTIME}"
+ 	else
+ 		echo "ignoring saved time ${FTIME} over ${CTIME}"
+ 	fi
+-- 
+2.25.1
+

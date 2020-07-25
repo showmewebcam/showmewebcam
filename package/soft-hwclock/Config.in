@@ -1,0 +1,7 @@
+config BR2_PACKAGE_SOFT_HWCLOCK
+	bool "Raspberry Pi soft-hwclock"
+	select BR2_PACKAGE_SYSTEMD
+	help
+	  Install Raspberry Pi Soft HWClock package
+
+	  https://github.com/kristjanvalur/soft-hwclock

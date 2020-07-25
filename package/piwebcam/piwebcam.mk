@@ -21,3 +21,5 @@ define PIWEBCAM_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/multi-gadget.sh $(TARGET_DIR)$(PIWEBCAM_DEST_DIR)
 	$(INSTALL) -D -m 0755 $(@D)/start-webcam.sh $(TARGET_DIR)$(PIWEBCAM_DEST_DIR)
 endef
+
+$(eval $(generic-package))
