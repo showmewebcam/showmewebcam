@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PIWEBCAM
+	bool "Raspberry Pi Webcam"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	help
+	  Install Raspberry Pi Webcam package
+
+	  https://github.com/showmewebcam/uvc-gadget

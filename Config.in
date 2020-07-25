@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_PICAM_PATH/package/piwebcam/Config.in"
