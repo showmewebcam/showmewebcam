@@ -3,6 +3,7 @@ BR2_arm1176jzf_s=y
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19=y
 BR2_TOOLCHAIN_BUILDROOT_CXX=y
 BR2_TARGET_GENERIC_ROOT_PASSWD="root"
+BR2_ROOTFS_OVERLAY="board/raspberrypi0cam/rootfs"
 BR2_ROOTFS_POST_BUILD_SCRIPT="board/raspberrypi0cam/post-build.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/raspberrypi0cam/post-image.sh"
 BR2_LINUX_KERNEL=y
