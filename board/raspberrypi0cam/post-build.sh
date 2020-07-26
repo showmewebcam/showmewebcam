@@ -12,3 +12,8 @@ ln -sf /usr/lib/systemd/system/serial-getty@.service "${TARGET_DIR}"/etc/systemd
 
 # Add wireless wpa for wlan0
 #ln -sf /usr/lib/systemd/system/wpa_supplicant@.service "${TARGET_DIR}"/etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
+
+if ! grep -qE '/var' "${TARGET_DIR}/etc/fstab"; then
+	echo 'tmpfs           /var            tmpfs   rw,mode=1777,size=64m' >> "${TARGET_DIR}/etc/fstab"
+fi
+
