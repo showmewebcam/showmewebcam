@@ -4,13 +4,8 @@ set -u
 set -e
 
 # Add a console on tty1
-if [ -e ${TARGET_DIR}/etc/inittab ]; then
-    grep -qE '^tty1::' ${TARGET_DIR}/etc/inittab || \
-	sed -i '/GENERIC_SERIAL/a\
-tty1::respawn:/sbin/getty -L  tty1 0 vt100 # HDMI console' ${TARGET_DIR}/etc/inittab
-fi
+mkdir -p "${TARGET_DIR}"/etc/systemd/system/getty.target.wants
+ln -sf /usr/lib/systemd/system/getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/getty@tty1.service
 
-cp package/busybox/S10mdev ${TARGET_DIR}/etc/init.d/S10mdev
-chmod 755 ${TARGET_DIR}/etc/init.d/S10mdev
-cp package/busybox/mdev.conf ${TARGET_DIR}/etc/mdev.conf
-
+# Add wireless wpa for wlan0
+ln -sf /usr/lib/systemd/system/wpa_supplicant@.service "${TARGET_DIR}"/etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
