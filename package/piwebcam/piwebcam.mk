@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PIWEBCAM_VERSION = 2d47d8d03caebb30875a40dc3513f83d577d9cd8
+PIWEBCAM_VERSION = 71efd9995c4498b7664167aeeff0fd06c15d70cd
 PIWEBCAM_SITE = git://github.com/showmewebcam/uvc-gadget.git
 PIWEBCAM_LICENSE = GPL-2.0+
 PIWEBCAM_LICENSE_FILES = LICENSE
