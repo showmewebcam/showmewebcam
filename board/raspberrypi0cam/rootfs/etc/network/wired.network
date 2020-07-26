@@ -1,7 +1,0 @@
-[Match]
-Name=eth*
-
-[Network]
-DHCP=yes
-RouteMetric=10
-IPv6PrivacyExtensions=true
