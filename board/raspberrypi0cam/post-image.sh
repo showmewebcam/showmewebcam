@@ -36,6 +36,19 @@ __EOF__
 		gpu_mem="${arg:2}"
 		sed -e "/^${gpu_mem%=*}=/s,=.*,=${gpu_mem##*=}," -i "${BINARIES_DIR}/rpi-firmware/config.txt"
 		;;
+		--configure-picam)
+		# Configure picam
+		if ! grep -qE '^dtoverlay=dwc2' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+
+			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+dtoverlay=dwc2
+__EOF__
+		fi
+
+		if ! grep -qE 'modules-load=dwc2,libcomposite' "${BINARIES_DIR}/rpi-firmware/cmdline.txt"; then
+			sed '/^root=/ s/$/ modules-load=dwc2,libcomposite/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
+		fi
+		;;
 	esac
 
 done
