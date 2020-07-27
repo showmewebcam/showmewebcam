@@ -3,7 +3,7 @@ Show-me webcam: An open source, trustable, and high quality webcam
 
 This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all your Zooming needs.
 
-What need
+What you need
 --
 - Raspberry Pi 0 W (I have not tested with the Pi 0 non-Wireless)
 - Pi 0 W Camera Ribbon (comes with the Pi 0 camera case or you can buy somewhere else, the stock one that comes with the camera may not fit).
