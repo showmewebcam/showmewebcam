@@ -3,11 +3,11 @@ Show-me webcam: An open source, trustable, and high quality webcam
 
 This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all your Zooming needs.
 
-- [Comparison with laptop built-in webcam and a dedicated camera](http://www.tnhh.net/posts/show-me-webcam.html)
+[Project page on Hackaday](https://hackaday.io/project/174479-raspberry-pi-0-hq-usb-webcam)
 
 - [Demo video](https://youtu.be/8qo2LUFLHgE)
 
-- [Sample camera picture](http://www.tnhh.net/assets/posts-images/showmewebcam/picam.jpg)
+- [Sample camera picture](http://www.tnhh.net/assets/posts-images/showmewebcam/picam.jpg) - Warning: OLD
 
 What you need
 --
@@ -18,13 +18,12 @@ What you need
 
 What works and what doesn't
 --
-- I have tested this with Ubuntu 20.04 and Windows 10, both worked.
-- I have not tested this build with the Raspberry Pi High-Quality camera.
-- As of v1.0, the camera does *not* work with macOS.
+- The camera is known to work on Linux, Windows 10 and macOS Mojave.
+- You can use the normal camera of the Pi, it will work too, of course it won't look too good.
 
 Directions
 --
-- Assemble the camera to the Pi. 
+- Assemble the camera to the Pi.
 - Download the binary release (down below).
 - Download and use Etcher to write the image to the SD card. 
 - Use the USB data port (the one in the middle of the Pi, not the one on the edge) to connect to a computer.
