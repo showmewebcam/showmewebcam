@@ -1,0 +1,12 @@
+[Unit]
+Description=Stars pi webcam service
+
+[Service]
+ExecStart=/opt/uvc-webcam/start-webcam.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=piwebcam
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=basic.target
