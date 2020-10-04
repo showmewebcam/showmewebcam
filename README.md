@@ -45,6 +45,43 @@ If you want to modify the image content the quick-and-dirty way (not recommended
 - Start with the `chroot-to-pi` script: https://gist.github.com/htruong/7df502fb60268eeee5bca21ef3e436eb
 - Edit `/bin/bash` to `/bin/sh` on the `chroot /mnt/raspbian /bin/bash` line.
 
+
+Customizing camera settings
+--
+
+Override camera settings temporarily:
+
+Log in to the debug interface. Then list all tweakable parameters:
+
+```bash
+/usr/bin/v4l2-ctl -L | less
+```
+
+Then you can directly apply parameters on the fly:
+
+```
+/usr/bin/v4l2-ctl -c auto_exposure_bias=15
+/usr/bin/v4l2-ctl -c contrast=0
+```
+
+Override camera settings permanently:
+
+Mount the SD card on your computer, and create a file called
+camera.txt in /boot and put all parameters you want overridden, e.g:
+
+```
+#Tweak the auto exposure bias
+auto_exposure_bias=15
+#Tweak the contrast
+contrast=0
+```
+
+You can edit camera.txt on-target by remounting /boot read-write:
+
+```bash
+mount -o remount,rw /boot
+```
+
 Building
 --
 Make a directory in your home: `develop`.
