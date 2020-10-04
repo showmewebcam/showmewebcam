@@ -17,3 +17,6 @@ if ! grep -qE '/var' "${TARGET_DIR}/etc/fstab"; then
 	echo 'tmpfs           /var            tmpfs   rw,mode=1777,size=64m' >> "${TARGET_DIR}/etc/fstab"
 fi
 
+if ! grep -qE '/boot' "${TARGET_DIR}/etc/fstab"; then
+	echo '/dev/mmcblk0p1  /boot           vfat    ro' >> "${TARGET_DIR}/etc/fstab"
+fi
