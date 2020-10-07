@@ -1,0 +1,26 @@
+#!/bin/expect --
+# Usage example:
+# smwc-expect /dev/ttyACM0 v4l2-ctl -L
+set device [lindex $argv 0]
+exp_spawn -noecho -open [open $device w+]
+exp_stty raw < $device
+exp_stty 115200 < $device
+send \r
+expect {
+    -ex "\nshowmepicam login: " {
+        send root\r
+        exp_continue
+    }
+    -ex "\nPassword:" {
+        send root\r
+        exp_continue
+    }
+    -ex "\n# " {
+        send [lrange $argv 1 end]
+        send "\r"
+        expect -ex "\n# "
+    }
+}
+exp_close
+send_user "\n"
+exit

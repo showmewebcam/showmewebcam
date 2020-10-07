@@ -36,7 +36,7 @@ Occasionally I release binary snapshots at the release tab: https://github.com/s
 Debugging
 --
 For debugging, a 115200 baud serial interface is provided as a ttyACM device:
-- Please use screen or minicom to connect to it.
+- Please use screen, minicom, or the included smwc-expect script to connect to it.
 - Use username: `root`, password `root`.
 
 Also, there is a *untested* serial interface on the serial 40-pin header: https://pinout.xyz/pinout/uart
