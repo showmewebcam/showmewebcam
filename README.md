@@ -11,7 +11,7 @@ This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all 
 
 What you need
 --
-- Raspberry Pi 0 W (I have not tested with the Pi 0 non-Wireless)
+- Raspberry Pi 0 W
 - Pi 0 W Camera Ribbon (comes with the Pi 0 camera case or you can buy somewhere else, the stock one that comes with the camera may not fit).
 - Raspberry Pi Camera or Raspberry Pi High-Quality Camera
 - Micro SD card
@@ -19,7 +19,13 @@ What you need
 What works and what doesn't
 --
 - The camera is known to work on Linux, Windows 10 and macOS Mojave.
-- You can use the normal camera of the Pi, it will work too, of course it won't look too good.
+- You can use the normal camera of the Pi, it will work too, of course it won't look too good. Some were tested as table below:
+
+| Raspberry Pi\Camera version  | v1 5MP  | v2 8MP  | High quality 12MP |
+| ---------------------------- | ------- | ------- | ----------------- |
+| Pi Zero v1.3 (without Wi-Fi) | &check; |         |                   |
+| Pi Zero W (with Wi-Fi)       | &check; | &check; | &check;           |
+| Pi 4+                        |         |         |                   |
 
 Directions
 --
@@ -89,7 +95,9 @@ Make a directory in your home: `develop`.
 - In `develop`, untar the `buildroot-2020.2.3` tar package and rename `buildroot-2020.02.3` to `buildroot`. 
 - Get out back to `develop`.
 - In `develop`, `git clone` this repo `https://github.com/showmewebcam/showmewebcam` to it.
-- Run `./build-showmewebcam.sh`.
+- Run build command:
+  -  `./build-showmewebcam.sh` to build Raspberry Pi Zero W (with Wi-Fi) image.
+  - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
 - The resulting image will be at the `buildroot/output/image` folder.
 
 Credits
