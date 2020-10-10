@@ -3,7 +3,9 @@
 set -e
 
 BOARD_DIR="$(dirname $0)"
-BOARD_NAME="$(basename ${BOARD_DIR})"
+if [ -z "$BOARD_NAME" ]; then
+	BOARD_NAME="$(basename ${BOARD_DIR})"
+fi
 GENIMAGE_CFG="${BOARD_DIR}/genimage-${BOARD_NAME}.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
