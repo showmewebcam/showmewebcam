@@ -45,6 +45,16 @@ dtoverlay=dwc2
 __EOF__
 		fi
 
+		# Configure uart on 40-pin header
+		if ! grep -qE '^enable_uart=1' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+
+			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+enable_uart=1
+__EOF__
+		fi
+
+
+
 		if ! grep -qE 'modules-load=dwc2,libcomposite' "${BINARIES_DIR}/rpi-firmware/cmdline.txt"; then
 			sed '/^root=/ s/$/ modules-load=dwc2,libcomposite/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
 		fi

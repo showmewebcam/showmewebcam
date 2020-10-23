@@ -45,7 +45,10 @@ For debugging, a 115200 baud serial interface is provided as a ttyACM device:
 - Please use screen, minicom, or the included smwc-expect script to connect to it.
 - Use username: `root`, password `root`.
 
-Also, there is a *untested* serial interface on the serial 40-pin header: https://pinout.xyz/pinout/uart
+Also, there is a serial interface on the 40-pin header: https://pinout.xyz/pinout/uart
+
+This interface is perhaps more helpful if you can't get the Pi to boot fully, because the serial-over-usb interface
+will not come up if the uvc-webcam startup script fails.
 
 If you want to modify the image content the quick-and-dirty way (not recommended):
 - Start with the `chroot-to-pi` script: https://gist.github.com/htruong/7df502fb60268eeee5bca21ef3e436eb
