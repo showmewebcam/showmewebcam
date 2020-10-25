@@ -11,8 +11,8 @@ This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all 
 
 What you need
 --
-- Raspberry Pi 0 W
-- Pi 0 W Camera Ribbon (comes with the Pi 0 camera case or you can buy somewhere else, the stock one that comes with the camera may not fit).
+- Raspberry Pi 0 with or without Wifi.
+- Pi 0 Camera Ribbon (comes with the Pi 0 camera case or you can buy somewhere else, the stock one that comes with the camera may not fit).
 - Raspberry Pi Camera or Raspberry Pi High-Quality Camera
 - Micro SD card
 
@@ -46,6 +46,15 @@ For debugging, a 115200 baud serial interface is provided as a ttyACM device:
 - Use username: `root`, password `root`.
 
 Also, there is a serial interface on the 40-pin header: https://pinout.xyz/pinout/uart
+
+Ubuntu example:
+```
+$ ll /dev/ttyACM*
+crw-rw---- 1 root dialout 166, 0 sep 25 14:03 /dev/ttyACM0
+$ sudo screen /dev/ttyACM0 115200
+```
+
+If the terminal get blank try pressing enter to see the login prompt.
 
 This interface is perhaps more helpful if you can't get the Pi to boot fully, because the serial-over-usb interface
 will not come up if the uvc-webcam startup script fails.
