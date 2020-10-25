@@ -99,9 +99,9 @@ Make a directory in your home: `develop`.
 - Get out back to `develop`.
 - In `develop`, `git clone` this repo `https://github.com/showmewebcam/showmewebcam` to it.
 - Run build command:
-  -  `./build-showmewebcam.sh` to build Raspberry Pi Zero W (with Wi-Fi) image.
-  - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
-- The resulting image will be at the `buildroot/output/image` folder.
+  - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wi-Fi) image.
+  - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
+- The resulting image will be at the `output/` folder in the showmewebcam directory.
 
 Credits
 --
