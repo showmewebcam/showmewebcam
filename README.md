@@ -23,7 +23,7 @@ What works and what doesn't
 
 | Raspberry Pi\Camera version  | v1 5MP  | v2 8MP  | High quality 12MP |
 | ---------------------------- | ------- | ------- | ----------------- |
-| Pi Zero v1.3 (without Wi-Fi) | &check; |         |                   |
+| Pi Zero v1.3 (without Wi-Fi) | &check; |         | &check;           |
 | Pi Zero W (with Wi-Fi)       | &check; | &check; | &check;           |
 | Pi 4+                        |         |         |                   |
 
