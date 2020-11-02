@@ -20,3 +20,6 @@ fi
 if ! grep -qE '/boot' "${TARGET_DIR}/etc/fstab"; then
 	echo '/dev/mmcblk0p1  /boot           vfat    ro' >> "${TARGET_DIR}/etc/fstab"
 fi
+
+# Disable fsck on root
+sed -ie '/^\/dev\/root/ s/0 1/0 0/' "${TARGET_DIR}/etc/fstab"
