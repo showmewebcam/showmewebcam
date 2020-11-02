@@ -1,58 +1,74 @@
 #!/bin/sh
-mkdir /sys/kernel/config/usb_gadget/pi4
 
-echo 0x1d6b > /sys/kernel/config/usb_gadget/pi4/idVendor
-echo 0x0104 > /sys/kernel/config/usb_gadget/pi4/idProduct
-echo 0x0100 > /sys/kernel/config/usb_gadget/pi4/bcdDevice
-echo 0x0200 > /sys/kernel/config/usb_gadget/pi4/bcdUSB
+CONFIG=/sys/kernel/config/usb_gadget/piwebcam
+mkdir -p "$CONFIG"
+cd "$CONFIG" || exit 1
 
-echo 0xEF > /sys/kernel/config/usb_gadget/pi4/bDeviceClass
-echo 0x02 > /sys/kernel/config/usb_gadget/pi4/bDeviceSubClass
-echo 0x01 > /sys/kernel/config/usb_gadget/pi4/bDeviceProtocol
+echo 0x1d6b > idVendor
+echo 0x0104 > idProduct
+echo 0x0100 > bcdDevice
+echo 0x0200 > bcdUSB
 
-mkdir /sys/kernel/config/usb_gadget/pi4/strings/0x409
-echo 100000000d2386db > /sys/kernel/config/usb_gadget/pi4/strings/0x409/serialnumber
-echo "Show-me-webcam Project" > /sys/kernel/config/usb_gadget/pi4/strings/0x409/manufacturer
-echo "Show-me-webcam Pi Webcam" > /sys/kernel/config/usb_gadget/pi4/strings/0x409/product
-mkdir /sys/kernel/config/usb_gadget/pi4/configs/c.2
-mkdir /sys/kernel/config/usb_gadget/pi4/configs/c.2/strings/0x409
-echo 500 > /sys/kernel/config/usb_gadget/pi4/configs/c.2/MaxPower
-echo "Show-me-webcam Pi Webcam" > /sys/kernel/config/usb_gadget/pi4/configs/c.2/strings/0x409/configuration
+echo 0xEF > bDeviceClass
+echo 0x02 > bDeviceSubClass
+echo 0x01 > bDeviceProtocol
+echo 0x40 > bMaxPacketSize0
 
-mkdir /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0
-mkdir /sys/kernel/config/usb_gadget/pi4/functions/acm.usb0
-mkdir -p /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/header/h
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/header/h /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/control/class/fs
+mkdir -p strings/0x409
+mkdir -p configs/c.2
+mkdir -p configs/c.2/strings/0x409
+echo 100000000d2386db         > strings/0x409/serialnumber
+echo "Show-me Webcam Project" > strings/0x409/manufacturer
+echo "Piwebcam "              > strings/0x409/product
+echo 500                      > configs/c.2/MaxPower
+echo "Piwebcam"               > configs/c.2/strings/0x409/configuration
 
-mkdir -p /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/dwFrameInterval
+mkdir -p functions/uvc.usb0/control/header/h
+mkdir -p functions/acm.usb0
+
+config_frame () {
+  FORMAT=$1
+  NAME=$2
+  WIDTH=$3
+  HEIGHT=$4
+
+  FRAMEDIR="functions/uvc.usb0/streaming/$FORMAT/$NAME/${HEIGHT}p"
+
+  mkdir -p "$FRAMEDIR"
+
+  echo "$WIDTH"                    > "$FRAMEDIR"/wWidth
+  echo "$HEIGHT"                   > "$FRAMEDIR"/wHeight
+  echo 333333                      > "$FRAMEDIR"/dwDefaultFrameInterval
+  echo $(($WIDTH * $HEIGHT * 80))  > "$FRAMEDIR"/dwMinBitRate
+  echo $(($WIDTH * $HEIGHT * 160)) > "$FRAMEDIR"/dwMaxBitRate
+  echo $(($WIDTH * $HEIGHT * 2))   > "$FRAMEDIR"/dwMaxVideoFrameBufferSize
+  cat <<EOF > "$FRAMEDIR"/dwFrameInterval
 333333
+400000
+666666
 EOF
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/wWidth
-1920
-EOF
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/wHeight
-1080
-EOF
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/dwMinBitRate
-10000000
-EOF
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/dwMaxBitRate
-100000000
-EOF
-cat <<EOF > /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m/1080p/dwMaxVideoFrameBufferSize
-7372800
-EOF
+}
 
+config_frame mjpeg m  640  360
+config_frame mjpeg m  640  480
+config_frame mjpeg m  800  600
+config_frame mjpeg m 1024  768
+config_frame mjpeg m 1280  720
+config_frame mjpeg m 1280  960
+config_frame mjpeg m 1440 1080
+config_frame mjpeg m 1536  864
+config_frame mjpeg m 1600  900
+config_frame mjpeg m 1600 1200
+config_frame mjpeg m 1920 1080
 
-mkdir /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/header/h
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/mjpeg/m /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/header/h
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/header/h /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/class/fs
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/header/h /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0/streaming/class/hs
+mkdir -p functions/uvc.usb0/streaming/header/h
+ln -s functions/uvc.usb0/streaming/mjpeg/m  functions/uvc.usb0/streaming/header/h
+ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/fs
+ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/hs
+ln -s functions/uvc.usb0/control/header/h   functions/uvc.usb0/control/class/fs
 
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/uvc.usb0 /sys/kernel/config/usb_gadget/pi4/configs/c.2/uvc.usb0
-ln -s /sys/kernel/config/usb_gadget/pi4/functions/acm.usb0 /sys/kernel/config/usb_gadget/pi4/configs/c.2/acm.usb0
+ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
+ln -s functions/acm.usb0 configs/c.2/acm.usb0
 
 udevadm settle -t 5 || :
-ls /sys/class/udc > /sys/kernel/config/usb_gadget/pi4/UDC
-
+ls /sys/class/udc > UDC
