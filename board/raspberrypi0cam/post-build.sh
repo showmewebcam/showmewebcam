@@ -23,3 +23,7 @@ fi
 
 # Disable fsck on root
 sed -ie '/^\/dev\/root/ s/0 1/0 0/' "${TARGET_DIR}/etc/fstab"
+
+# Disable unused services
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/sys-kernel-debug.mount
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/dev-mqueue.mount
