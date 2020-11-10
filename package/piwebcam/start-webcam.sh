@@ -21,4 +21,4 @@ else
   logger -t "$LOGGER_TAG" "No camera.txt found in boot"
 fi
 
-/opt/uvc-webcam/uvc-gadget -f1 -u /dev/video1 -v /dev/video0
+/opt/uvc-webcam/uvc-gadget -l -u /dev/video1 -v /dev/video0
