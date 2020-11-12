@@ -60,6 +60,13 @@ boot_delay=0
 __EOF__
 		fi
 
+		# Set turbo mode for boot
+		if ! grep -qE '^initial_turbo' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+initial_turbo=10
+__EOF__
+		fi
+
 		# Inform the kernel about the filesystem and ro state
 		if ! grep -qE 'rootfstype=squashfs ro' "${BINARIES_DIR}/rpi-firmware/cmdline.txt"; then
 			sed '/^root=/ s/$/ rootfstype=squashfs ro/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
