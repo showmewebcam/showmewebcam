@@ -7,7 +7,7 @@ exp_stty raw < $device
 exp_stty 115200 < $device
 send \r
 expect {
-    -ex "\nshowmepicam login: " {
+    -ex "\npiwebcam login: " {
         send root\r
         exp_continue
     }
