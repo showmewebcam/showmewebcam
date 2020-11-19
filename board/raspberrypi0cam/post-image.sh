@@ -74,6 +74,17 @@ __EOF__
 			sed '/^root=/ s/$/ quiet/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
 		fi
 
+		# Add default camera.txt and add custom config if it exists
+		cp "$BR2_EXTERNAL_PICAM_PATH/package/piwebcam/camera.txt" "${BINARIES_DIR}/camera.txt"
+		if [ -f "$BR2_EXTERNAL_PICAM_PATH/camera.txt" ]; then
+			cat << __EOF__ >> "${BINARIES_DIR}/camera.txt"
+
+# User settings added during build
+
+__EOF__
+			cat "$BR2_EXTERNAL_PICAM_PATH/camera.txt" >> "${BINARIES_DIR}/camera.txt"
+		fi
+
 		;;
 	esac
 

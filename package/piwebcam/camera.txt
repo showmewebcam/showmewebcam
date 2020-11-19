@@ -1,0 +1,7 @@
+# Default Show-me webcam camera settings
+#
+# Use v4l2-ctl -L or have a look at camera.txt.example
+# to view all possible settings
+
+auto_exposure_bias=3
+video_bitrate=25000000

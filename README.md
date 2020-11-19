@@ -111,6 +111,7 @@ Make a directory in your home: `develop`.
   - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wi-Fi) image.
   - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
 - The resulting image will be at the `output/` folder in the showmewebcam directory.
+- If you add a camera.txt file to the root of this repository, the contents will be automatically added to /boot/camera.txt
 
 Credits
 --

@@ -1,8 +1,6 @@
 #!/bin/sh
 
 /opt/uvc-webcam/multi-gadget.sh
-/usr/bin/v4l2-ctl -c auto_exposure_bias=3
-/usr/bin/v4l2-ctl -c video_bitrate=25000000
 
 CONFIG_FILE="/boot/camera.txt"
 LOGGER_TAG="piwebcam"
