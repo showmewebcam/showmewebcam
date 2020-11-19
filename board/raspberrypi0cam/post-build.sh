@@ -27,3 +27,8 @@ sed -ie '/^\/dev\/root/ s/0 1/0 0/' "${TARGET_DIR}/etc/fstab"
 # Disable unused services
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/sys-kernel-debug.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/dev-mqueue.mount
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp.service
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel.service
+if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
+  ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
+fi
