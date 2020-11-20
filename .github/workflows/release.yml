@@ -1,0 +1,58 @@
+name: Build showmewebcam
+
+on:
+  # Triggers the workflow on push or pull request events on the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUILDROOT_VERSION: '2020.08.2'
+      BUILDROOT_DIR: 'buildroot'
+
+    strategy:
+      matrix:
+        raspberry: ['raspberrypi0', 'raspberrypi0w']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Get short SHA, as github only gives us the full SHA
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
+
+      - name: Download Buildroot
+        run: |
+          wget -qc https://buildroot.org/downloads/buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
+          tar -zxf buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
+          mv buildroot-${{ env.BUILDROOT_VERSION }} ${{ env.BUILDROOT_DIR }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        with:
+          path: |
+            output
+            # Don't cache piwebcam as we want to force a rebuild every time
+            !output/${{ matrix.raspberry }}/build/piwebcam*
+          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}
+          restore-keys: |
+            ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-
+
+      - name: Build image
+        run: |
+          sh build-showmewebcam.sh ${{ matrix.raspberry }}
+          cp -vf output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+
+      - name: Upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          path: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img

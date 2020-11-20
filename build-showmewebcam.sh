@@ -31,4 +31,4 @@ case "$BOARDNAME" in
 esac
 
 BR2_EXTERNAL="$(pwd)" make O="$(pwd)/output/$BOARDNAME" -C "$BUILDROOT_DIR" "$target_defconfig"
-make -C "output/$BOARDNAME" all
+make -s -C "output/$BOARDNAME" all
