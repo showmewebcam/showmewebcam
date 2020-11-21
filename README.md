@@ -35,6 +35,10 @@ Directions
 - Use the USB data port (the one in the middle of the Pi, not the one on the edge) to connect to a computer.
 - Enjoy!
 
+Streaming indicator
+--
+When camera is streaming the build-in LED will be lit. In addition, [GPIO 21](https://pinout.xyz/pinout/pin40_gpio21#) pin is set to HIGH, so an external LED or another payload can be triggered with this pin to indicate that the camera is in use.
+
 Binary releases
 --
 Occasionally I release binary snapshots at the release tab: https://github.com/showmewebcam/showmewebcam/releases
