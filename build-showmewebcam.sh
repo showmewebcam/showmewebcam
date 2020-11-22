@@ -31,4 +31,18 @@ case "$BOARDNAME" in
 esac
 
 BR2_EXTERNAL="$(pwd)" make O="$(pwd)/output/$BOARDNAME" -C "$BUILDROOT_DIR" "$target_defconfig"
-make -s -C "output/$BOARDNAME" all
+
+
+OUTPUT_IMG=output/"$BOARDNAME"/images/sdcard.img
+
+# gzip will ask interactively to overwrite if the file already exists
+# so let's remove the output file now
+# we can ask gzip to not ask but the -f flag is more overreaching than
+# just not asking to overwrite, so let's play it safe here
+
+if [ -f "$OUTPUT_IMG".gz ] ; then
+	rm  "$OUTPUT_IMG".gz
+fi
+
+make -s -C "output/$BOARDNAME" all \
+	&& gzip -9 "$OUTPUT_IMG"

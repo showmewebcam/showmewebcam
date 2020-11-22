@@ -49,10 +49,10 @@ jobs:
       - name: Build image
         run: |
           sh build-showmewebcam.sh ${{ matrix.raspberry }}
-          cp -vf output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          mv output/${{ matrix.raspberry }}/images/sdcard.img.gz sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img.gz
 
       - name: Upload image
         uses: actions/upload-artifact@v2
         with:
-          name: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
-          path: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          name: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img.gz
+          path: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img.gz
