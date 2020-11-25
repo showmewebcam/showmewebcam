@@ -3,11 +3,13 @@ Show-me webcam: An open source, trustable, and high quality webcam
 
 This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all your Zooming needs.
 
-[Project page on Hackaday](https://hackaday.io/project/174479-raspberry-pi-0-hq-usb-webcam)
+It works reliably, boots quickly, and gets out of your way. 
 
-- [Demo video](https://youtu.be/8qo2LUFLHgE)
+- [Introductions video](https://youtu.be/nH2G16YoBT4)
 
-- [Sample camera picture](http://www.tnhh.net/assets/posts-images/showmewebcam/picam.jpg) - Warning: OLD
+- [Project page on Hackaday](https://hackaday.io/project/174479-raspberry-pi-0-hq-usb-webcam)
+
+Show-me webcam is powered by [peterbay's uvc-gadget](https://github.com/peterbay/uvc-gadget).
 
 What you need
 --
