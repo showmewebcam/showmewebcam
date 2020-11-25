@@ -29,6 +29,4 @@ ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/sys-kernel-debug.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/dev-mqueue.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp.service
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel.service
-if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
-  ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
-fi
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
