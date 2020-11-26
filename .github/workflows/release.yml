@@ -10,12 +10,18 @@ on:
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       BUILDROOT_VERSION: '2020.08.2'
       BUILDROOT_DIR: 'buildroot'
+      # Stupid hack to invalidate cache from UI
+      CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
 
     strategy:
       matrix:
@@ -24,6 +30,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # Get short SHA, as github only gives us the full SHA
       - uses: benjlevesque/short-sha@v1.2
@@ -41,15 +49,13 @@ jobs:
           path: |
             output
             # Don't cache piwebcam as we want to force a rebuild every time
-            !output/${{ matrix.raspberry }}/build/piwebcam*
-          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}
-          restore-keys: |
-            ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-
+            !output/*/build/piwebcam*
+          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ env.CACHE_VERSION }}
 
       - name: Build image
         run: |
           sh build-showmewebcam.sh ${{ matrix.raspberry }}
-          cp -vf output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          mv output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
 
       - name: Upload image
         uses: actions/upload-artifact@v2
