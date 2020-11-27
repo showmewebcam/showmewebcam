@@ -76,3 +76,7 @@ BR2_PACKAGE_PIWEBCAM=y
 
 # Add glibc toolchain
 BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+
+# CCache inside "output/" in order to cache it
+BR2_CCACHE=y
+BR2_CCACHE_DIR="$(BASE_DIR)/.ccache"
