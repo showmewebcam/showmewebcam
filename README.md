@@ -27,7 +27,7 @@ What works and what doesn't
 | ---------------------------- | ------- | ------- | ----------------- |
 | Pi Zero v1.3 (without Wi-Fi) | &check; |         | &check;           |
 | Pi Zero W (with Wi-Fi)       | &check; | &check; | &check;           |
-| Pi 4+                        |         |         |                   |
+| Pi 4+                        |         |         | &check;           |
 
 Directions
 --

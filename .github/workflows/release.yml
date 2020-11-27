@@ -28,7 +28,7 @@ jobs:
 
     strategy:
       matrix:
-        raspberry: ['raspberrypi0', 'raspberrypi0w']
+        raspberry: ['raspberrypi0', 'raspberrypi0w', 'raspberrypi4']
 
     steps:
       - name: Checkout Code
