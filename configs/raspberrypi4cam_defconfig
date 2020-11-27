@@ -1,0 +1,78 @@
+# Raspberrypi 4 defconfig modified for Showmewebcam
+BR2_arm=y
+BR2_cortex_a72=y
+BR2_ARM_FPU_NEON_VFPV4=y
+
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+# Linux headers same as kernel, a 4.19 series (known to work with OTG on pi4)
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19=y
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,64d0a9870ac14d5eb5253f67d984ae348eec1393)/linux-64d0a9870ac14d5eb5253f67d984ae348eec1393.tar.gz"
+BR2_LINUX_KERNEL_DEFCONFIG="bcm2711"
+
+# Build the DTB from the kernel sources
+BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="bcm2711-rpi-4-b"
+
+BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL=y
+
+BR2_PACKAGE_RPI_FIRMWARE=y
+BR2_PACKAGE_RPI_FIRMWARE_VARIANT_PI4=y
+
+# Required tools to create the SD image
+BR2_PACKAGE_HOST_DOSFSTOOLS=y
+BR2_PACKAGE_HOST_GENIMAGE=y
+BR2_PACKAGE_HOST_MTOOLS=y
+
+# Filesystem / image
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
+BR2_TARGET_ROOTFS_EXT2_SIZE="120M"
+# BR2_TARGET_ROOTFS_TAR is not set
+# BR2_ROOTFS_POST_BUILD_SCRIPT="board/raspberrypi4/post-build.sh" # Set in custom config
+# BR2_ROOTFS_POST_IMAGE_SCRIPT="board/raspberrypi4/post-image.sh" # Set in custom config
+# BR2_ROOTFS_POST_SCRIPT_ARGS="--add-miniuart-bt-overlay" # Set in custom config
+
+### Custom config ###
+# Name
+BR2_TARGET_GENERIC_HOSTNAME="piwebcam"
+BR2_TARGET_GENERIC_ISSUE="Your webcam at your service!"
+
+# Set default password
+BR2_TARGET_GENERIC_ROOT_PASSWD="root"
+
+# Serial port through USB
+BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"
+
+# Custom Config
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi4cam/linux.config"
+
+# Add firmware extras (enables camera module)
+BR2_PACKAGE_RPI_FIRMWARE_X=y
+
+# Default Filesystem
+BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi4cam/rootfs"
+
+# Add SquashFS
+BR2_LINUX_KERNEL_LZ4=y
+BR2_TARGET_ROOTFS_SQUASHFS=y
+BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
+
+# Post build scripts
+BR2_ROOTFS_POST_BUILD_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi4cam/post-build.sh"
+BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi4cam/post-image.sh"
+BR2_ROOTFS_POST_SCRIPT_ARGS="--configure-picam"
+
+# Enable systemd to for picam service
+BR2_INIT_SYSTEMD=y
+
+# Add required packages
+BR2_PACKAGE_LIBV4L=y
+BR2_PACKAGE_LIBNL=y
+BR2_PACKAGE_PIWEBCAM=y
+
+# Add glibc toolchain
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
