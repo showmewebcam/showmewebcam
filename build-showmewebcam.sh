@@ -17,11 +17,11 @@ case "$BOARDNAME" in
 
 			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM defconfig" -i "$target_defconfig_loc"
 			# change architecture
-			sed "s/BR2_arm1176jzf_s/BR2_cortex_a72/g" -i "$target_defconfig_loc"
+			sed "s/BR2_arm1176jzf_s=y/BR2_cortex_a72=y\nBR2_ARM_FPU_NEON_VFPV4=y/g" -i "$target_defconfig_loc"
 			# add Pi 4 firmware
 			sed "s/BR2_PACKAGE_RPI_FIRMWARE=y/BR2_PACKAGE_RPI_FIRMWARE=y\nBR2_PACKAGE_RPI_FIRMWARE_VARIANT_PI4=y/g" -i "$target_defconfig_loc"
 			# change kernel to 4.19 for Pi4 OTG to work
-			sed "s/BR2_KERNEL_HEADERS_5_4/BR2_KERNAL_HEADERS_4_19/g" -i "$target_defconfig_loc"
+			sed "s/BR2_KERNEL_HEADERS_5_4/BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19/g" -i "$target_defconfig_loc"
 			sed "s/c5e512a329ac7a0bfdd5f53477f4300723618db5/64d0a9870ac14d5eb5253f67d984ae348eec1393/g" -i "$target_defconfig_loc"
 			# change path
 			sed "s/board\/raspberrypi0cam/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
