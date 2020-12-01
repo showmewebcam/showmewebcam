@@ -1,2 +1,3 @@
 source "$BR2_EXTERNAL_PICAM_PATH/package/piwebcam/Config.in"
 source "$BR2_EXTERNAL_PICAM_PATH/package/soft-hwclock/Config.in"
+source "$BR2_EXTERNAL_PICAM_PATH/package/camera-control/Config.in"

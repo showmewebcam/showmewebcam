@@ -72,6 +72,22 @@ If you want to modify the image content the quick-and-dirty way (not recommended
 Customizing camera settings
 --
 
+Automatic
+---
+
+Log in to the debug interface and execute
+
+```bash
+/usr/bin/camera-ctl
+```
+
+This tool will allow you to show and tweak all available camera parameters.
+Additionally it will save your settings to `/boot/camera.txt` if you choose to
+do so. This will handle remounting /boot automatically.
+
+Manual
+---
+
 Override camera settings temporarily:
 
 Log in to the debug interface. Then list all tweakable parameters:
