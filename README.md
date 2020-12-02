@@ -5,7 +5,7 @@ This firmware transforms your Raspberry Pi 0 W to a high quality webcam for all 
 
 It works reliably, boots quickly, and gets out of your way. 
 
-## [Wiki & Documentation](https://github.com/showmewebcam/showmewebcam/wiki) | [Discord Chat](https://discord.gg/dTc4jtf3YX) | [Introduction video](https://youtu.be/nH2G16YoBT4) | [Hackaday Project](https://hackaday.io/project/174479-raspberry-pi-0-hq-usb-webcam)
+### [Wiki & Documentation](https://github.com/showmewebcam/showmewebcam/wiki) | [Discord Chat](https://discord.gg/dTc4jtf3YX) | [Introduction video](https://youtu.be/nH2G16YoBT4) | [Hackaday Project](https://hackaday.io/project/174479-raspberry-pi-0-hq-usb-webcam)
 
 Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/peterbay/uvc-gadget).
 
@@ -14,6 +14,7 @@ What you need
 - Raspberry Pi 0 with or without Wifi.
 - Pi 0 Camera Ribbon (comes with the Pi 0 camera case or you can buy somewhere else, the stock one that comes with the camera may not fit).
 - Raspberry Pi Camera or Raspberry Pi High-Quality Camera
+- [A compatible lens](https://github.com/showmewebcam/showmewebcam/wiki/Lenses) if you use the HQ Camera sensor.
 - Micro SD card
 
 What works and what doesn't
@@ -29,7 +30,7 @@ What works and what doesn't
 
 Directions
 --
-- Assemble the camera to the Pi.
+- [Assemble the camera to the Pi](https://www.youtube.com/watch?v=8fcbP7lEdzY&t=365s).
 - Download the binary release (down below).
 - Download and use Etcher to write the image to the SD card. 
 - Use the USB data port (the one in the middle of the Pi, not the one on the edge) to connect to a computer.
