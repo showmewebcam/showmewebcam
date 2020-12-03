@@ -19,6 +19,11 @@ case "$BOARDNAME" in
 			# change path
 			sed "s/board\/$ORIGIN_PI_CAM/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
 
+			### generate linuxconfig ###
+			target_linuxconfig="${BOARDNAME}.config"
+			target_linuxconfig_loc="board/$BOARDNAME/$target_linuxconfig"
+			cat "board/$ORIGIN_PI_CAM/default${BOARDNAME}.config" "board/$ORIGIN_PI_CAM/${ORIGIN_PI_CAM}.config" > "$target_linuxconfig_loc"
+
 			### generate genimage ###
 			target_genimage="genimage-${BOARDNAME}.cfg"
 			target_genimage_loc="board/$BOARDNAME/$target_genimage"
@@ -47,6 +52,11 @@ case "$BOARDNAME" in
 			# change dts file
 			sed "s/bcm2708-rpi-zero-w/bcm2708-rpi-zero/g" -i "$target_defconfig_loc"
 
+			### generate linuxconfig ###
+			target_linuxconfig="${BOARDNAME}.config"
+			target_linuxconfig_loc="board/$BOARDNAME/$target_linuxconfig"
+			cat "board/$ORIGIN_PI_CAM/default${BOARDNAME}.config" "board/$ORIGIN_PI_CAM/${ORIGIN_PI_CAM}.config" > "$target_linuxconfig_loc"
+
 			### generate genimage ###
 			target_genimage="genimage-${BOARDNAME}.cfg"
 			target_genimage_loc="board/$BOARDNAME/$target_genimage"
@@ -69,6 +79,11 @@ case "$BOARDNAME" in
 			# change path
 			sed "s/board\/$ORIGIN_PI_CAM/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
 			
+			### generate linuxconfig ###
+			target_linuxconfig="${BOARDNAME}.config"
+			target_linuxconfig_loc="board/$BOARDNAME/$target_linuxconfig"
+			cat "board/$ORIGIN_PI_CAM/default${BOARDNAME}.config" "board/$ORIGIN_PI_CAM/${ORIGIN_PI_CAM}.config" > "$target_linuxconfig_loc"
+
 			### generate genimage ###
 			target_genimage="genimage-${BOARDNAME}.cfg"
 			target_genimage_loc="board/$BOARDNAME/$target_genimage"
