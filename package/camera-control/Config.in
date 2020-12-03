@@ -1,0 +1,8 @@
+config BR2_PACKAGE_CAMERA_CONTROL
+	bool "V4L2 Camera Control"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR
+	help
+	  Install V4L2 Camera Control package
+
+	  https://github.com/peterbay/camera-control

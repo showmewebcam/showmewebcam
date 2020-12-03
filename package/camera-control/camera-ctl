@@ -1,0 +1,21 @@
+#!/bin/sh
+
+CONF=/boot/camera.txt
+TMP=/tmp/camera.txt
+CAM=/dev/video0
+
+cp $CONF $TMP || touch $TMP
+
+/opt/camera-control/camera-ctl -c $TMP -v $CAM \
+  -i repeat_sequence_header \
+  -i h264_i_frame_period \
+  -i h264_level \
+  -i h264_profile \
+  -i compression_quality
+
+mount -o remount,rw /boot || { echo "Cannot remount boot as read-write, please inspect and transfer /tmp/camera.txt to /boot manually"; exit 1; }
+cp $TMP $CONF
+sync
+mount -o remount,ro /boot || echo "Warning: Cannot remount boot as read-only."
+
+rm $TMP
