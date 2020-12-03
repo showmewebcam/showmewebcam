@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ORIGIN_PI_CAM="raspberrypi0cam" # renamed from raspberrypi0w
-target_defconfig="$ORIGIN_PI_BOARD"_defconfig
+ORIGIN_PI_CAM="raspberrypi0cam" # renamed from raspberrypi0cam
+target_defconfig="$ORIGIN_PI_CAM"_defconfig
 
 BOARDNAME=$1
 
@@ -10,64 +10,69 @@ case "$BOARDNAME" in
 			# post-image.sh will gen corresponding image depend on basename path
 			ln -sfrn "board/$ORIGIN_PI_CAM" "board/$BOARDNAME"
 
-			### Modify defconfig ###
+			### generate defconfig ###
 			target_defconfig="${BOARDNAME}_defconfig"
 			target_defconfig_loc="configs/$target_defconfig"
-			cp -f "configs/$ORIGIN_PI_CAM"_defconfig "$target_defconfig_loc"
+			cat "configs/defaultpi4_defconfig" "configs/${ORIGIN_PI_CAM}_defconfig" > "$target_defconfig_loc"
 
 			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM defconfig" -i "$target_defconfig_loc"
-			# change architecture
-			sed "s/BR2_arm1176jzf_s=y/BR2_cortex_a72=y\nBR2_ARM_FPU_NEON_VFPV4=y/g" -i "$target_defconfig_loc"
-			# add Pi 4 firmware
-			sed "s/BR2_PACKAGE_RPI_FIRMWARE=y/BR2_PACKAGE_RPI_FIRMWARE=y\nBR2_PACKAGE_RPI_FIRMWARE_VARIANT_PI4=y/g" -i "$target_defconfig_loc"
-			# change kernel to 4.19 for Pi4 OTG to work
-			sed "s/BR2_KERNEL_HEADERS_5_4/BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19/g" -i "$target_defconfig_loc"
-			sed "s/c5e512a329ac7a0bfdd5f53477f4300723618db5/64d0a9870ac14d5eb5253f67d984ae348eec1393/g" -i "$target_defconfig_loc"
 			# change path
-			sed "s/board\/raspberrypi0cam/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
-			# change dts file
-			sed "s/bcm2708-rpi-zero-w/bcm2711-rpi-4-b/g" -i "$target_defconfig_loc"
-			# change 
-			sed "s/linux.config/linux-${BOARDNAME}.config/g" -i "$target_defconfig_loc"
+			sed "s/board\/$ORIGIN_PI_CAM/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
 
-			### Modify linux.config ###
-			target_linuxconfig="linux-${BOARDNAME}.config"
-			target_linuxconfig_loc="board/$BOARDNAME/$target_linuxconfig"
-			cp -f "board/$ORIGIN_PI_CAM/linux.config" "$target_linuxconfig_loc"
-
-			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM linux.config" -i "$target_linuxconfig_loc"
-			# Change architecture 
-			sed "s/CONFIG_ARCH_MULTI_V6=y/\# CONFIG_ARCH_MULTI_V6 is not set/g" -i "$target_linuxconfig_loc"
-			sed "s/\# CONFIG_ARCH_MULTI_V7 is not set/CONFIG_ARCH_MULTI_V7=y\nCONFIG_ARCH_MULTI_V6_V7=y/g" -i "$target_linuxconfig_loc"
-			sed "s/\# CONFIG_LOCALVERSION_AUTO is not set/CONFIG_LOCALVERSION="-v7l"/g" -i "$target_linuxconfig_loc"
-
-			### Modify genimage ###
+			### generate genimage ###
 			target_genimage="genimage-${BOARDNAME}.cfg"
 			target_genimage_loc="board/$BOARDNAME/$target_genimage"
-			cp -f "board/$ORIGIN_PI_CAM/genimage-raspberrypi0cam.cfg" "$target_genimage_loc"
+			cp -f "board/$ORIGIN_PI_CAM/genimage-${ORIGIN_PI_CAM}.cfg" "$target_genimage_loc"
 
-			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM genimage-raspberrypi0cam.cfg" -i "$target_genimage_loc"
-			# Change change dts file
+			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM/genimage-${ORIGIN_PI_CAM}.cfg" -i "$target_genimage_loc"
+			# change dts file
 			sed "s/bcm2708-rpi-zero-w/bcm2711-rpi-4-b/g" -i "$target_genimage_loc"
-			# Remove bootcode.bin
+			# change boot size
+			sed "s/size = 16M/size = 32M/g" -i "$target_genimage_loc"
+			# remove bootcode.bin
 			sed '/bootcode.bin/d' -i "$target_genimage_loc"
         ;;
         raspberrypi0)
-			target_defconfig="${BOARDNAME}_defconfig"
-			target_defconfig_loc="configs/$target_defconfig"
 			# post-image.sh will gen corresponding image depend on basename path
 			ln -sfrn "board/$ORIGIN_PI_CAM" "board/$BOARDNAME"
-			cp -f "configs/$ORIGIN_PI_CAM"_defconfig "$target_defconfig_loc"
+
+			### generate defconfig ###
+			target_defconfig="${BOARDNAME}_defconfig"
+			target_defconfig_loc="configs/$target_defconfig"
+			cat "configs/defaultpi0w_defconfig" "configs/${ORIGIN_PI_CAM}_defconfig" > "$target_defconfig_loc"
 
 			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM defconfig" -i "$target_defconfig_loc"
 			# change path
-			sed "s/board\/raspberrypi0cam/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
+			sed "s/board\/$ORIGIN_PI_CAM/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
 			# change dts file
 			sed "s/bcm2708-rpi-zero-w/bcm2708-rpi-zero/g" -i "$target_defconfig_loc"
+
+			### generate genimage ###
+			target_genimage="genimage-${BOARDNAME}.cfg"
+			target_genimage_loc="board/$BOARDNAME/$target_genimage"
+			cp -f "board/$ORIGIN_PI_CAM/genimage-${ORIGIN_PI_CAM}.cfg" "$target_genimage_loc"
+
+			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM/genimage-$ORIGIN_PI_CAM.cfg" -i "$target_genimage_loc"
+			# change dts file
+			sed "s/bcm2708-rpi-zero-w/bcm2708-rpi-zero/g" -i "$target_genimage_loc"
         ;;
         raspberrypi0w)
-			target_defconfig="$ORIGIN_PI_CAM"_defconfig
+			# post-image.sh will gen corresponding image depend on basename path
+			ln -sfrn "board/$ORIGIN_PI_CAM" "board/$BOARDNAME"
 
+			### generate defconfig ###
+			target_defconfig="${BOARDNAME}_defconfig"
+			target_defconfig_loc="configs/$target_defconfig"
+			cat "configs/defaultpi0w_defconfig" "configs/${ORIGIN_PI_CAM}_defconfig" > "$target_defconfig_loc"
+
+			sed "1i ### DO NOT EDIT, this is generated file from $ORIGIN_PI_CAM defconfig" -i "$target_defconfig_loc"
+			# change path
+			sed "s/board\/$ORIGIN_PI_CAM/board\/$BOARDNAME/g" -i "$target_defconfig_loc"
+			
+			### generate genimage ###
+			target_genimage="genimage-${BOARDNAME}.cfg"
+			target_genimage_loc="board/$BOARDNAME/$target_genimage"
+			cp -f "board/$ORIGIN_PI_CAM/genimage-${ORIGIN_PI_CAM}.cfg" "$target_genimage_loc"
         ;;
         *)
 			echo "usage: BUILDROOT_DIR=../buildroot $0 (boardname)"
@@ -77,4 +82,4 @@ case "$BOARDNAME" in
 esac
 
 BR2_EXTERNAL="$(pwd)" make O="$(pwd)/output/$BOARDNAME" -C "$BUILDROOT_DIR" "$target_defconfig"
-make -C "output/$BOARDNAME" all
+# make -C "output/$BOARDNAME" all
