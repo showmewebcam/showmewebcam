@@ -1,0 +1,1 @@
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="bcm2708-rpi-zero-w"
