@@ -19,9 +19,9 @@ BR2_TARGET_ROOTFS_SQUASHFS=y
 BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
 
 # Build rootfs overlay and post scripts
-BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypicam/rootfs"
-BR2_ROOTFS_POST_BUILD_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypicam/post-build.sh"
-BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypicam/post-image.sh"
+BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi0cam/rootfs"
+BR2_ROOTFS_POST_BUILD_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi0cam/post-build.sh"
+BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/raspberrypi0cam/post-image.sh"
 BR2_ROOTFS_POST_SCRIPT_ARGS="--configure-picam"
 
 # Enable compiler cache
