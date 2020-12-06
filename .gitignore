@@ -1,4 +1,5 @@
+buildroot
 output
-board/raspberrypi0
-configs/raspberrypi0_defconfig
 /camera.txt
+configs/*_defconfig
+board/linux.config
