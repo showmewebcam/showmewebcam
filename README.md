@@ -42,7 +42,7 @@ When camera is streaming the build-in LED will be lit. In addition, [GPIO 21](ht
 
 Binary releases
 --
-Occasionally I release binary snapshots at the release tab: https://github.com/showmewebcam/showmewebcam/releases
+Occasionally we release binary snapshots at the release tab: https://github.com/showmewebcam/showmewebcam/releases
 
 Debugging
 --
@@ -123,17 +123,16 @@ mount -o remount,rw /boot
 
 Building
 --
-Make a directory in your home: `develop`.
+Clone or download this repository. Then inside it:
 
-- In `develop`, untar the `buildroot-2020.2.3` tar package and rename `buildroot-2020.02.3` to `buildroot`. 
-- Get out back to `develop`.
-- In `develop`, `git clone` this repo `https://github.com/showmewebcam/showmewebcam` to it.
+- Download the latest Buildroot stable, e.g. `buildroot-2020.8`, and extract it
+- Rename it to `buildroot` (optional)
 - Run build command:
-  - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wi-Fi) image.
-  - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
-  - `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi4` to build Raspberry Pi 4 image.
-- The resulting image will be at the `output/` folder in the showmewebcam directory.
-- If you add a camera.txt file to the root of this repository, the contents will be automatically added to /boot/camera.txt
+  - `./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wi-Fi) image.
+  - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
+  - **IMPORTANT**: If you didn't rename your Buildroot directory to `buildroot` or if you put it somewhere else you need to set the Buildroot path manually, e.g. `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0`
+- The resulting image `sdcard.img` will be in the `output/$BOARDNAME/images` folder
+- If you add a `camera.txt` file to the root of this repository, the contents will be automatically added to `/boot/camera.txt`
 
 Credits
 --
