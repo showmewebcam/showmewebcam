@@ -132,8 +132,8 @@ Building
 --
 Clone or download this repository. Then inside it:
 
-- Download the latest Buildroot stable, e.g. `buildroot-2020.8`, and extract it
-- Rename it to `buildroot` (optional)
+- Download the latest Buildroot stable from https://buildroot.org/download.html
+- Extract it and rename it to `buildroot`
 - Run build command:
   - `./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wi-Fi) image.
   - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wi-Fi) image.
