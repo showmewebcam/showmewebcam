@@ -59,6 +59,13 @@ crw-rw---- 1 root dialout 166, 0 sep 25 14:03 /dev/ttyACM0
 $ sudo screen /dev/ttyACM0 115200
 ```
 
+Mac OS example:
+```
+$ ls /dev/tty.*
+crw-rw-rw-  1 root  wheel    9,  18 Dec  7 13:14 /dev/tty.usbmodem13103
+$ screen /dev/tty.usbmodem13103 115200
+```
+
 If the terminal get blank try pressing enter to see the login prompt.
 
 This interface is perhaps more helpful if you can't get the Pi to boot fully, because the serial-over-usb interface
