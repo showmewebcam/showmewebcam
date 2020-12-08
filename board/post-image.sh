@@ -74,10 +74,10 @@ __EOF__
 			sed '/^root=/ s/$/ modules-load=dwc2,libcomposite/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
 		fi
 
-		# # Suppress kernel output during boot
-		# if ! grep -qE 'quiet' "${BINARIES_DIR}/rpi-firmware/cmdline.txt"; then
-		# 	sed '/^root=/ s/$/ quiet/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
-		# fi
+		# Suppress kernel output during boot
+		if ! grep -qE 'quiet' "${BINARIES_DIR}/rpi-firmware/cmdline.txt"; then
+			sed '/^root=/ s/$/ quiet/' -i "${BINARIES_DIR}/rpi-firmware/cmdline.txt"
+		fi
 
 		# Add default camera.txt and add custom config if it exists
 		cp "$BR2_EXTERNAL_PICAM_PATH/package/piwebcam/camera.txt" "${BINARIES_DIR}/camera.txt"

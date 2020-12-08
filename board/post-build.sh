@@ -5,7 +5,7 @@ set -e
 
 mkdir -p "${TARGET_DIR}"/etc/systemd/system/getty.target.wants
 # Add a console on tty1
-ln -sf /usr/lib/systemd/system/getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/getty@tty1.service
+#ln -sf /usr/lib/systemd/system/getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/getty@tty1.service
 
 # Add a console on ttyAMA0
 ln -sf /usr/lib/systemd/system/serial-getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
@@ -29,6 +29,6 @@ ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/sys-kernel-debug.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/dev-mqueue.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp.service
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel.service
-if [[ ${TARGET_DIR} == *"raspberrypi0"* ]]; then
+if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
   ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
 fi
