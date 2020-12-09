@@ -5,7 +5,7 @@ set -e
 
 mkdir -p "${TARGET_DIR}"/etc/systemd/system/getty.target.wants
 # Add a console on tty1
-#ln -sf /usr/lib/systemd/system/getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/getty@tty1.service
+ln -sf /usr/lib/systemd/system/getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/getty@tty1.service
 
 # Add a console on ttyAMA0
 ln -sf /usr/lib/systemd/system/serial-getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
