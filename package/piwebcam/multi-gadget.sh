@@ -43,6 +43,7 @@ config_frame () {
   echo $(($WIDTH * $HEIGHT * 160)) > "$FRAMEDIR"/dwMaxBitRate
   echo $(($WIDTH * $HEIGHT * 2))   > "$FRAMEDIR"/dwMaxVideoFrameBufferSize
   cat <<EOF > "$FRAMEDIR"/dwFrameInterval
+166667
 333333
 400000
 666666
