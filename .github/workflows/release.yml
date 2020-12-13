@@ -18,9 +18,9 @@ defaults:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '2020.08.2'
+      BUILDROOT_VERSION: '2020.11'
       BUILDROOT_DIR: 'buildroot'
       # Stupid hack to invalidate cache from UI
       # https://github.com/actions/cache/issues/2#issuecomment-673493515
@@ -85,7 +85,7 @@ jobs:
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build
 
     steps:
