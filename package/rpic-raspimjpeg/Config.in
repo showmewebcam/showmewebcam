@@ -1,0 +1,5 @@
+config BR2_PACKAGE_RPIC_RASPIMJPEG
+	depends on BR2_PACKAGE_RPI_USERLAND
+	bool "rpic-raspimjpeg"
+	help
+		Adds raspimjpeg from https://github.com/rpicopter/raspimjpeg

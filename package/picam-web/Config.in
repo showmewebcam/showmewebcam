@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PICAM_WEB
+	bool "WebUI Camera Control"
+	help
+	  Install WebUI Camera Control package
+
+	  https://github.com/tuyenld/picam-web
