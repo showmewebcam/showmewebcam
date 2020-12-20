@@ -82,9 +82,27 @@ $ screen /dev/tty.usbmodem13103 115200
 If the terminal is blank try pressing enter to see the login prompt. To exit
 the session, use `Ctrl-A \` (screen) or `Ctrl-A X` (minicom & picocom).
 
-**ATTENTION**: This interface is not really helpful if the Raspberry Pi didn't
-boot fully, as the serial-over-USB interface only comes up when uvc-gadget
-starts.
+**Warning**: This serial debug interface is automatically enabled and is controlled
+by the file called `enable-serial-debug` in the `/boot` folder. This is a potential
+security issue. For now, you should strongly consider disabling this feature by
+removing the file after you have finished customizing the webcam.
+
+
+### My camera doesn't show up on my host computer! What to do?
+
+From version 1.80, on Linux, you can see what happens by watching `dmesg`
+before you plug in the webcam:
+
+```
+$ sudo dmesg -w
+```
+
+If you only see the `ttyACM` device show up, but not the webcam, it's likely you
+have not plugged in the camera cable correctly, or the camera cable has gone bad.
+
+If you see nothing, maybe your USB cable is bad, or you have plugged in the cable
+to the wrong port.
+
 
 ## Customizing camera settings
 

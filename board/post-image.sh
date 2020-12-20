@@ -90,6 +90,17 @@ __EOF__
 			cat "$BR2_EXTERNAL_PICAM_PATH/camera.txt" >> "${BINARIES_DIR}/camera.txt"
 		fi
 
+		# Add default enable-serial-debug file
+		cat << __EOF__ >> "${BINARIES_DIR}/enable-serial-debug"
+# This file signifies that you want to enable the serial debug console
+# via the USB port. Once you have configured the webcam to your needs
+# it is recommended that you delete this file. This action ensures that
+# your webcam's firmware won't be changed by the host computer's software.
+#
+# In the future, we will not place this file here by default, instead you'll
+# have to manually create this file if you want to access the console.
+__EOF__
+
 		;;
 	esac
 
