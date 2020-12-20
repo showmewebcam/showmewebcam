@@ -22,9 +22,6 @@ jobs:
     env:
       BUILDROOT_VERSION: '2020.11'
       BUILDROOT_DIR: 'buildroot'
-      # Stupid hack to invalidate cache from UI
-      # https://github.com/actions/cache/issues/2#issuecomment-673493515
-      CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
 
     strategy:
       matrix:
@@ -55,7 +52,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: output
-          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ env.CACHE_VERSION }}
+          # Stupid hack to invalidate cache from UI
+          # https://github.com/actions/cache/issues/2#issuecomment-673493515
+          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ secrets.CACHE_VERSION }}
 
       - name: Build Image
         run: |
