@@ -25,7 +25,7 @@ endef
 
 define PIWEBCAM_INSTALL_INIT_SYSTEMD
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/$(PIWEBCAM_INIT_SYSTEMD_TARGET)
-	$(INSTALL) -D -m 644 $(PIWEBCAM_PKGDIR)/piwebcam.service $(TARGET_DIR)/usr/lib/systemd/system
+	$(INSTALL) -D -m 644 $(PIWEBCAM_PKGDIR)/piwebcam.service $(TARGET_DIR)/usr/lib/systemd/system/piwebcam.service
 	ln -sf /usr/lib/systemd/system/piwebcam.service $(TARGET_DIR)/etc/systemd/system/$(PIWEBCAM_INIT_SYSTEMD_TARGET)
 endef
 
