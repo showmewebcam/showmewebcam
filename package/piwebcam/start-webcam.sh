@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Turning off HDMI saves 25mA on idle
+/usr/bin/tvservice -o
+
 /opt/uvc-webcam/multi-gadget.sh
 
 CONFIG_FILE="/boot/camera.txt"
