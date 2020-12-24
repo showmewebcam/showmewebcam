@@ -2,7 +2,7 @@
 
 set -e
 
-GENIMAGE_CFG="$(dirname $0)/genimage-${BOARDNAME}.cfg"
+GENIMAGE_CFG="$(dirname "$0")/genimage-${BOARDNAME}.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
 for arg in "$@"
