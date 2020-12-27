@@ -22,9 +22,6 @@ jobs:
     env:
       BUILDROOT_VERSION: '2020.11'
       BUILDROOT_DIR: 'buildroot'
-      # Stupid hack to invalidate cache from UI
-      # https://github.com/actions/cache/issues/2#issuecomment-673493515
-      CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
 
     strategy:
       matrix:
@@ -45,17 +42,23 @@ jobs:
           echo "GIT_TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "Current version: $(git describe)"
 
+      - name: Cache Build
+        id: restore-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            output
+            buildroot
+          # Stupid hack to invalidate cache from UI
+          # https://github.com/actions/cache/issues/2#issuecomment-673493515
+          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ secrets.CACHE_VERSION }}
+
       - name: Download Buildroot
+        if: steps.restore-cache.outputs.cache-hit != 'true'
         run: |
           wget -qc https://buildroot.org/downloads/buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
           tar -zxf buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
           mv buildroot-${{ env.BUILDROOT_VERSION }} ${{ env.BUILDROOT_DIR }}
-
-      - name: Cache Build
-        uses: actions/cache@v2
-        with:
-          path: output
-          key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ env.CACHE_VERSION }}
 
       - name: Build Image
         run: |

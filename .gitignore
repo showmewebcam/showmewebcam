@@ -1,5 +1,6 @@
 buildroot
 output
+/enable-serial-debug
 /camera.txt
 configs/*_defconfig
 board/linux.config

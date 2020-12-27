@@ -1,5 +1,6 @@
 [Unit]
-Description=Starts pi webcam service
+Description=Starts Raspberry Pi UVC webcam service
+After=usb-gadget-config.service
 
 [Service]
 ExecStart=/opt/uvc-webcam/start-webcam.sh
