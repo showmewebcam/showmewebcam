@@ -1,0 +1,27 @@
+name: Shellcheck
+
+on:
+  # Triggers the workflow on push or pull request events on the master branch
+  pull_request:
+    branches: [ master ]
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Shellcheck all scripts
+        run: |
+          shellcheck $(git ls-files '*.sh')
