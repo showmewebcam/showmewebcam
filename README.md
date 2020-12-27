@@ -29,7 +29,7 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 
 | Raspberry Pi \ Camera version  | v1 5MP  | v2 8MP  | High Quality 12MP |
 | ------------------------------ | ------- | ------- | ----------------- |
-| Pi Zero v1.3 (without Wifi)    | &check; |         | &check;           |
+| Pi Zero v1.3 (without Wifi)    | &check; | &check; | &check;           |
 | Pi Zero W (with Wifi)          | &check; | &check; | &check;           |
 | Pi 4+                          |         |         |                   |
 
