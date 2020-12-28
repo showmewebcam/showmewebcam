@@ -85,11 +85,19 @@ config_usb_webcam () {
   ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
 }
 
-# Check if camera is installed correctly
-if [ ! -e /dev/video0 ] ; then
-  echo "I did not detect a camera connected to the Pi. Please check your hardware."
-  CONFIGURE_USB_WEBCAM=false
-fi
+wait_count=0
+MAX_WAIT=5
+# Check if camera is enumerated, if not, then wait up to 5 seconds before giving up
+while [ ! -e /dev/video0 ] ; do
+    echo "No camera detected, waiting..."
+    sleep 1
+    wait_count=$((wait_count + 1))
+    if [ "$wait_count" -ge "$MAX_WAIT" ]; then
+        echo "No camera detected after waiting, giving up. Please check your hardware."
+        CONFIGURE_USB_WEBCAM=false
+        break
+    fi
+done
 
 if [ "$CONFIGURE_USB_WEBCAM" = true ] ; then
   echo "Configuring USB gadget webcam interface"
