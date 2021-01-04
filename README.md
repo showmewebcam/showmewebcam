@@ -88,6 +88,13 @@ security issue. For now, you should strongly consider disabling this feature by
 removing the file after you have finished customizing the webcam.
 
 
+## Networking
+
+See [the wiki](https://github.com/showmewebcam/showmewebcam/wiki/Networking)
+for more information on how to enable networking on various operating systems
+for debugging and development purposes.
+
+
 ### My camera doesn't show up on my host computer! What to do?
 
 From version 1.80, on Linux, you can see what happens by watching `dmesg`

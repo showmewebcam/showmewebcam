@@ -1,0 +1,13 @@
+[Unit]
+Description=Configure Raspberry Pi link-local USB network
+After=usb-gadget-config.service
+
+[Service]
+ExecStart=/opt/uvc-webcam/usb-network.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=usb-network
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=basic.target
