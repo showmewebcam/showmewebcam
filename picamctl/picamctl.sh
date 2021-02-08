@@ -1,13 +1,12 @@
 #!/bin/bash
 # akseidel 02/06/2021
 # A script automating the steps to run showmewencam's "camera-ctl".
-
 # The script will pause for continue or exit if run with an argument.
-debugpause=$1 
+
 # edit this next line to be the correct text pattern for your computer.
-portnamepat="tty.usbmodem*" #typical for showmewebcam on Appl OS X
-#portnamepat="ttyACM*" #probably typical for showmewebcam on Linux
-#portnamepat="tty.*"
+portnamepat="tty.usbmodem" #typical for showmewebcam on Appl OS X
+#portnamepat="ttyACM" #probably typical for showmewebcam on Linux
+#portnamepat="tty."
 # The client is an application you want this script to also run. 
 runtheclient="true"
 clientname="Photo Booth"
@@ -39,7 +38,7 @@ doscreensession(){
     # been attached at some point. Here the nest screen into a spawner screen
     # trick is used to get around that.   
     screen -dmS spawner
-    screen -S spawner -X screen screen -dR thispicam $piusbwebcamport 115200
+    screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
     sleep 0.3
     screen -S thispicam -X detach
     sleep 0.3
@@ -65,31 +64,31 @@ showintro(){
 
 # collect the port names
 getportnames(){
-    serialportlist=$(ls -a /dev/$portnamepat 2> /dev/null)
-    countofserialportslist=$(ls -a /dev/$portnamepat  2> /dev/null | wc -l)
+    serialportlist=$(find /dev/"$portnamepat"* 2> /dev/null)
+    countofserialportslist=$(find /dev/"$portnamepat"*  2> /dev/null | wc -l)
 }
 
 # report port qty
 rptportqty(){
-    echo "  $(expr $countofserialportslist + 0) such ports found."
+    echo "  $((countofserialportslist+0)) such ports found."
 }
 
 # report ports
 rptportlist(){
-    echo " " $serialportlist 2> /dev/null
+    echo " " "$serialportlist" 2> /dev/null
 }
 
 # set port to use and show it
 dosetport(){
     # changes item space separator to a newline and returns tail item
     piusbwebcamport=$(echo "$serialportlist" | tr ' ' '\n' | tail -1)
-    echo "  Assuming this last one => " $piusbwebcamport
+    echo "  Assuming this last one => " "$piusbwebcamport"
     echo "======================================================================"
 }
 
 # option for pause and exit if any argument present, for diagnostic use
 option2exit(){
-    if [ ! -z "$1" ]
+    if [ -n "$1" ]
     then
         while read -r -s -p "Press any key when ready to continue. (ESC key quits)" -n1 key 
         do
@@ -107,8 +106,7 @@ option2exit(){
 
 # checkboot status
 checkbootstatus(){
-while [ $countofserialportslist = 0 ]
-    do
+while [ "$countofserialportslist" -eq 0 ]; do
         echo ""
         echo "  None found! Got that USB thing plugged in or waited the 10 seconds"
         echo "  needed for booting up? Periodic boot checking is now happening."
@@ -120,10 +118,10 @@ while [ $countofserialportslist = 0 ]
             do
                 echo -ne "  Checking for a ready showmewebcam. Attempt $chk out of $chklim  ... \r"
                 getportnames
-                if [ $countofserialportslist != 0 ]; then
+                if [ ! "$countofserialportslist" -eq 0 ]; then
                     break 2
                 fi
-                chk=$(( $chk + 1 ))
+                chk=$(( chk + 1 ))
                 sleep 2
             done
         echo -e "  Run this again when the camera is ready.                             "
@@ -141,7 +139,7 @@ rptportqty
 checkbootstatus
 rptportlist
 dosetport
-option2exit $1
+option2exit "$1"
 runclient
 doscreensession
 
