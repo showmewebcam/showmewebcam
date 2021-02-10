@@ -31,7 +31,7 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 | ------------------------------ | ------- | ------- | ----------------- |
 | Pi Zero v1.3 (without Wifi)    | &check; | &check; | &check;           |
 | Pi Zero W (with Wifi)          | &check; | &check; | &check;           |
-| Pi 4+                          |         |         |                   |
+| Pi 4+                          |         |         | &check;           |
 
 ## Instructions
 
@@ -162,6 +162,7 @@ Clone or download this repository. Then inside it:
 - Run build command:
   - `./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wifi) image.
   - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wifi) image.
+  - `./build-showmewebcam.sh raspberrypi4` to build Raspberry Pi 4 image.
   - **IMPORTANT**: If you didn't rename your Buildroot directory to `buildroot` or if you put it somewhere else you need to set the Buildroot path manually, e.g. `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0`
 - The resulting image `sdcard.img` will be in the `output/$BOARDNAME/images` folder
 - If you add a `camera.txt` file to the root of this repository, the contents will be automatically added to `/boot/camera.txt`
