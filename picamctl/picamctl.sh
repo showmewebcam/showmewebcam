@@ -60,17 +60,14 @@ doscreensession(){
     # trick is used to get around that.   
     screen -dmS spawner
     screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
-    sleep 0.5
+    sleep 0.3
     screen -S thispicam -X detach
     sleep 0.2
-    #screen -S thispicam -X stuff $'root\n'
-    screen -S thispicam -X stuff "$(printf '%b_' 'root\n')"
+    screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
     sleep 0.2
-    #screen -S thispicam -X stuff $'root\n'
-    screen -S thispicam -X stuff "$(printf '%b ' 'root\n')"
+    screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
     sleep 0.2
-    #screen -S thispicam -X stuff $'camera-ctl\n'
-    screen -S thispicam -X stuff "$(printf '%b_' 'camera-ctl\n')"
+    screen -S thispicam -X stuff "$(printf '%b' "camera-ctl\r")"
     sleep 0.2
     screen -r thispicam
 }
@@ -89,8 +86,8 @@ showintro(){
 
 # collect the port names
 getportnames(){
-    serialportlist=$(find /dev/"$portnamepat"*) 2> /dev/null
-    countofserialportslist=$( find /dev/"$portnamepat"*   | wc -l) 2> /dev/null
+    serialportlist=$(find "/dev/$portnamepat"* 2> /dev/null)
+    countofserialportslist=$( find "/dev/$portnamepat"*  2> /dev/null | wc -l) 2> /dev/null
 }
 
 # report port qty
@@ -142,7 +139,7 @@ while [ "$countofserialportslist" -eq 0 ]; do
         chklim=12
         while [ $chk -le $chklim ]
             do
-                printf "  Checking for a ready showmewebcam. Attempt %s out of %s ... \r" "$chk" "$chklim"
+                printf "  Checking again for a ready showmewebcam. Attempt %s out of %s ... \r" "$chk" "$chklim"
                 getportnames
                 if [ ! "$countofserialportslist" -eq 0 ]; then
                     printf "\n  Bingo! Looks like showmewebcam is now ready.\n"

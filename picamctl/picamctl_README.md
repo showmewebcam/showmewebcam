@@ -27,9 +27,18 @@ The USB Raspberry Pi Zero showmewebcam is a plug-in-and-it-works webcam system w
 * Open a Terminal window.
 * In the Terminal window change the current directory to be the one where you copied **picamctl.sh**.
 * Plug the Raspberry Pi Zero showmewebcam webcam system USB cable into the computer.
-* In the Terminal window type in "**./picamctl.sh**" or "**bash ./picamctl.sh**".
+* In the Terminal window type in "**./picamctl.sh**" or "**sh ./picamctl.sh**".
 * If showmewebcam has yet to finish booting, **picamctl.sh** will make a number of attempts to check for a late startup.
+
+<p align="center">
+  <img src="graphics/picamctl_waiting.png?raw=true" alt="picamctl waiting"/>
+</p>
+
 * The Terminal window should now be logged into the Raspberry Pi Zero showmewebcam system and showing the camera control interface.
+
+<p align="center">
+  <img src="graphics/cameractl_image.png?raw=true" alt="camera-ctl running"/>
+</p>
 
 ### Shut Down
 
@@ -38,7 +47,7 @@ The USB Raspberry Pi Zero showmewebcam is a plug-in-and-it-works webcam system w
 
 ### Details and Comments
 
-* picamctl.sh currently runs under sh.
+* picamctl.sh is composed for sh.
 * When **picamctl.sh** is started the argument d, for example "**./picamctl.sh  d**", the script halts after printing out diagnostic information. This mode can be used for troubleshooting the serial device name it has selected to use for the connection.
 * In this script the remote logging into the Raspberry Pi Zero happens in a detached terminal screen session where the user name "root", the password "root" and the application name "camera-ctl" are passed into the detached screen. Finally, the detached screen is attached, thus making it visible. The timing sometimes does not happen as it should. The result can be an improper connection. Unplug the USB connection and then repeat the startup procedure. 
 
