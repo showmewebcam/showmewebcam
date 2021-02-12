@@ -57,10 +57,12 @@ doscreensession(){
     # For some reason screen stuffing the user, password and camera-ctl to
     # a detached target screen does not work without the target screen having
     # been attached at some point. Here the nest screen into a spawner screen
-    # trick is used to get around that.   
+    # trick is used to get around that.
+    # The sleep lines were found to be required and the minimum sleep time durations
+    # were found to vary per OS and computer.   
     screen -dmS spawner
     screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
-    sleep 0.3
+    sleep 0.7
     screen -S thispicam -X detach
     sleep 0.2
     screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
@@ -122,6 +124,7 @@ option2debugexit(){
             printf "searching: /dev/%s*\n" "$portnamepat"
             printf "serialportlist: %s\n" "$serialportlist"
             printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
+            piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
             printf "piusnwebcamport: %s\n" "$piusbwebcamport"
             printf "Halted\n"
             exit 0
@@ -164,7 +167,6 @@ option2debugexit "$1"
 checkbootstatus 
 rptportlist
 dosetport
-#option2debugexit "$1"
 runclient
 doscreensession
 
