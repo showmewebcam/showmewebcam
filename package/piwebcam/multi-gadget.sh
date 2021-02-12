@@ -89,6 +89,8 @@ config_usb_webcam () {
 if [ ! -e /dev/video0 ] ; then
   echo "I did not detect a camera connected to the Pi. Please check your hardware."
   CONFIGURE_USB_WEBCAM=false
+  # Nobody can read the error if we don't have serial enabled!
+  CONFIGURE_USB_SERIAL=true
 fi
 
 if [ "$CONFIGURE_USB_WEBCAM" = true ] ; then
