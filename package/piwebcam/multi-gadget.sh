@@ -101,5 +101,7 @@ if [ "$CONFIGURE_USB_SERIAL" = true ] ; then
   config_usb_serial
 fi
 
-udevadm settle -t 5 || :
 ls /sys/class/udc > UDC
+
+# Ensure any configfs changes are picked up
+udevadm settle -t 5 || :

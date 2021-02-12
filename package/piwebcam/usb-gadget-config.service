@@ -1,5 +1,6 @@
 [Unit]
 Description=Configure Raspberry Pi as a USB gadget
+After=systemd-udev-settle.service
 
 [Service]
 Type=oneshot
