@@ -1,0 +1,15 @@
+[Unit]
+Description=Forward i2s mic audio to uac2.usb0 USB audio gadget
+After=usb-gadget-config.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/audiobridge.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=audiobridge
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=multi-user.target
