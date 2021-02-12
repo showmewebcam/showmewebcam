@@ -4,6 +4,7 @@
 # As it can be used as a persistence exploitation vector
 CONFIGURE_USB_SERIAL=false
 CONFIGURE_USB_WEBCAM=true
+CONFIGURE_USB_AUDIO=true
 
 # Now apply settings from the boot config
 if [ -f "/boot/enable-serial-debug" ] ; then
@@ -32,6 +33,11 @@ echo "Show-me Webcam Project" > strings/0x409/manufacturer
 echo "Piwebcam"               > strings/0x409/product
 echo 500                      > configs/c.2/MaxPower
 echo "Piwebcam"               > configs/c.2/strings/0x409/configuration
+
+config_usb_audio () {
+  mkdir -p functions/uac2.usb0
+  ln -s functions/uac2.usb0 configs/c.2/uac2.usb0
+}
 
 config_usb_serial () {
   mkdir -p functions/acm.usb0
@@ -91,6 +97,7 @@ if [ ! -e /dev/video0 ] ; then
   CONFIGURE_USB_WEBCAM=false
 fi
 
+# NOTE: The webcam must be initialized before audio for the webcam to work
 if [ "$CONFIGURE_USB_WEBCAM" = true ] ; then
   echo "Configuring USB gadget webcam interface"
   config_usb_webcam
@@ -100,6 +107,13 @@ if [ "$CONFIGURE_USB_SERIAL" = true ] ; then
   echo "Configuring USB gadget serial interface"
   config_usb_serial
 fi
+
+if [ "$CONFIGURE_USB_AUDIO" = true ] ; then
+  echo "Configuring USB gadget audio interface"
+  config_usb_audio
+fi
+
+
 
 udevadm settle -t 5 || :
 ls /sys/class/udc > UDC

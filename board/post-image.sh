@@ -36,10 +36,14 @@ __EOF__
 		;;
 		--configure-picam)
 		# Configure picam
+		# NOTE: Ordering of parameters is important here, dwc2 must come before i2s
+		# and adau7002-simple
 		if ! grep -qE '^dtoverlay=dwc2' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
 
 			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
 dtoverlay=dwc2
+dtparam=i2s=on
+dtoverlay=adau7002-simple
 __EOF__
 		fi
 

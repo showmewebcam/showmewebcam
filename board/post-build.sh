@@ -32,3 +32,10 @@ ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel
 if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
   ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
 fi
+
+# ALSA & alsaloop
+BOARD_DIR="$(dirname $0)"
+cp "${BOARD_DIR}"/asound.conf "${TARGET_DIR}"/etc/asound.conf
+cp "${BOARD_DIR}"/audiobridge.sh "${TARGET_DIR}"/opt/audiobridge.sh
+chmod 755 "${TARGET_DIR}"/opt/audiobridge.sh
+cp "${BOARD_DIR}"/audiobridge.service "${TARGET_DIR}"/etc/systemd/system/audiobridge.service
