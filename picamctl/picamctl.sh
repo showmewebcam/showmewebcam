@@ -1,5 +1,5 @@
 #!/bin/sh
-# akseidel 02/06/21 02/10/21
+# akseidel 02/06/21 02/10/21 02/13/21
 # A script automating the steps to run showmewencam's "camera-ctl".
 # Script will print diagnostic information and halt when run with an argument d.
 
@@ -18,9 +18,10 @@ initperos(){
     Linux)
         portnamepat="ttyACM"
         #portnamepat="tty*"
-        runtheclient="false"
-        #clientname="???"
+        runtheclient="true"
+        clientname="/usr/bin/webcamoid"
         ;;
+    # Yet to do Windows implementation
     #CYGWIN*|MINGW32*|MSYS*|MINGW*)
     #    ;;
     *)
@@ -30,7 +31,7 @@ initperos(){
         runtheclient="false"
         #clientname="???"
         ;;
-esac
+    esac
 }
 
 # initial cleanup
@@ -38,16 +39,30 @@ initclean(){
     reset
     clear
     # terminates all the ort screen sessions.
-    screen -ls | grep Attached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
+    screen -ls | grep Attached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null 
     screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
 }
 
 # run the client application
 runclient(){
     if [ "$runtheclient" = "true" ]; then
-        # -g causes application to open in background 
-        # https://scriptingosx.com/2017/02/the-macos-open-command/
-        open -g -a "$clientname"
+        case "$(uname -s)" in
+        Darwin)
+            # -g causes application to open in background 
+            # https://scriptingosx.com/2017/02/the-macos-open-command/
+            open -g -a "$clientname"
+            ;;
+        Linux)
+            # Start a detached screen session running the client app
+            # refered as webcamapp
+            screen -dmS webcamapp "/usr/bin/webcamoid"
+            ;;
+        # Yet to do Windows implementation
+        #CYGWIN*|MINGW32*|MSYS*|MINGW*)
+        #    ;;
+        *)
+            ;;
+        esac
     fi
 }
 
@@ -59,7 +74,7 @@ doscreensession(){
     # been attached at some point. Here the nest screen into a spawner screen
     # trick is used to get around that.
     # The sleep lines were found to be required and the minimum sleep time durations
-    # were found to vary per OS and computer.   
+    # were found to vary per OS and computer.
     screen -dmS spawner
     screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
     sleep 0.7
@@ -132,7 +147,8 @@ option2debugexit(){
     fi
 }
 
-# checkboot status
+# checkboot status repeatedly gets the matching serial port names looking
+# for at least one matching name. 
 checkbootstatus(){
 while [ "$countofserialportslist" -eq 0 ]; do
         printf "\n  None found! Got that USB thing plugged in or waited the 10 seconds\n"
