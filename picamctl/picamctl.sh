@@ -1,7 +1,11 @@
 #!/bin/sh
-# akseidel 02/06/21 02/10/21 02/13/21
+# akseidel 02/06/21 02/14/21
 # A script automating the steps to run showmewencam's "camera-ctl".
-# Script will print diagnostic information and halt when run with an argument d.
+# Script arguments:
+# -d  = diagnostic halt
+# -nc = do not run the client
+# -c = run client and use next argument for the client name
+# For example: ./picamctl.sh -c "Quicktime Player"
 
 # init per the operating system
 # portnamepat is the serial device port name pattern
@@ -43,6 +47,49 @@ initclean(){
     screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
 }
 
+# React to arguments passed
+# -d  = diagnostic halt
+# -nc = do not run the client
+# -c = run client and use next argument for the client name
+doreacttoargs(){
+    i=1;
+    j=$#;
+    while [ $i -le $j ] 
+      do
+          if [ "$1" = '-d' ]; then
+            diagmode="true"
+          fi
+          if [ "$1" = '-nc' ]; then
+            runtheclient="false"
+          fi
+          if [ "$1" = '-c' ]; then
+            runtheclient="true"
+            # next argument assumed to be the client name
+            # this needs so error trapping
+            i=$((i + 1));
+            shift 1;
+            clientname="$1"       
+          fi
+        i=$((i + 1));
+        shift 1;
+      done
+
+      if [ "$diagmode" = "true" ]; then
+          printf "\nDiagnostic stop.\n"
+          printf "OS: %s\n" "$(uname -s)"
+          printf "runtheclient: %s\n" "$runtheclient"
+          printf "clientname: %s\n" "$clientname"
+          printf "portnamepat: %s\n" "$portnamepat"
+          printf "searching: /dev/%s*\n" "$portnamepat"
+          printf "serialportlist: %s\n" "$serialportlist"
+          printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
+          piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
+          printf "piusnwebcamport: %s\n" "$piusbwebcamport"
+          printf "Halted\n"
+          exit 0
+      fi
+}
+
 # run the client application
 runclient(){
     if [ "$runtheclient" = "true" ]; then
@@ -63,6 +110,12 @@ runclient(){
         *)
             ;;
         esac
+        # A slight pause is required after starting the client to avoid having the newly starting
+        # client negociating with the piwebcam during the subsequent serial connection for
+        # starting the camerta-ctl utility. Sometimes this interfers with the process. Othertimes 
+        # it results warning statements issued by showmewebcam that are briefly visible before
+        # the camera-ctl inferface shpws up.
+        sleep 1.5
     fi
 }
 
@@ -126,27 +179,6 @@ dosetport(){
     printf "======================================================================\n"
 }
 
-# debug dump when run with argument d
-option2debugexit(){
-    if [ -n "$1" ]
-    then
-        if [ "$1" = 'd' ]; then
-            printf "\nDiagnostic stop.\n"
-            printf "OS: %s\n" "$(uname -s)"
-            printf "runtheclient: %s\n" "$runtheclient"
-            printf "clientname: %s\n" "$clientname"
-            printf "portnamepat: %s\n" "$portnamepat"
-            printf "searching: /dev/%s*\n" "$portnamepat"
-            printf "serialportlist: %s\n" "$serialportlist"
-            printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
-            piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
-            printf "piusnwebcamport: %s\n" "$piusbwebcamport"
-            printf "Halted\n"
-            exit 0
-        fi
-    fi
-}
-
 # checkboot status repeatedly gets the matching serial port names looking
 # for at least one matching name. 
 checkbootstatus(){
@@ -179,7 +211,7 @@ initperos
 showintro
 getportnames
 rptportqty
-option2debugexit "$1"  
+doreacttoargs "$@"  
 checkbootstatus 
 rptportlist
 dosetport
