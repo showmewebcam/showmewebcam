@@ -93,29 +93,34 @@ doreacttoargs(){
 # run the client application
 runclient(){
     if [ "$runtheclient" = "true" ]; then
-        case "$(uname -s)" in
-        Darwin)
-            # -g causes application to open in background 
-            # https://scriptingosx.com/2017/02/the-macos-open-command/
-            open -g -a "$clientname"
-            ;;
-        Linux)
-            # Start a detached screen session running the client app
-            # refered as webcamapp
-            screen -dmS webcamapp "/usr/bin/webcamoid"
-            ;;
-        # Yet to do Windows implementation
-        #CYGWIN*|MINGW32*|MSYS*|MINGW*)
-        #    ;;
-        *)
-            ;;
-        esac
-        # A slight pause is required after starting the client to avoid having the newly starting
-        # client negociating with the piwebcam during the subsequent serial connection for
-        # starting the camerta-ctl utility. Sometimes this interfers with the process. Othertimes 
-        # it results warning statements issued by showmewebcam that are briefly visible before
-        # the camera-ctl inferface shpws up.
-        sleep 1.5
+        if [ "$clientname" != "" ]; then
+            case "$(uname -s)" in
+            Darwin)
+                # -g causes application to open in background 
+                # https://scriptingosx.com/2017/02/the-macos-open-command/
+                open -g -a "$clientname"
+                ;;
+            Linux)
+                # Start a detached screen session running the client app
+                # refered as webcamapp
+                screen -dmS webcamapp "$clientname"
+                ;;
+            # Yet to do Windows implementation
+            #CYGWIN*|MINGW32*|MSYS*|MINGW*)
+            #    ;;
+            *)
+                ;;
+            esac
+            printf "Starting %s ...\n" "$clientname"
+            # A slight pause is required after starting the client to avoid having the newly starting
+            # client negociating with the piwebcam during the subsequent serial connection for
+            # starting the camerta-ctl utility. Sometimes this interfers with the process. Othertimes 
+            # it results warning statements issued by showmewebcam that are briefly visible before
+            # the camera-ctl inferface shpws up.
+            sleep 1.5
+        else
+            printf "The client name is blank.\n"
+        fi
     fi
 }
 
