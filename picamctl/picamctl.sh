@@ -1,7 +1,8 @@
 #!/bin/sh
-# akseidel 02/06/21 02/14/21
+# akseidel 02/06/21 02/17/21
 # A script automating the steps to run showmewencam's "camera-ctl".
 # Script arguments:
+# -m  = manual logging in to Pi Zero
 # -d  = diagnostic halt
 # -nc = do not run the client
 # -c = run client and use next argument for the client name
@@ -54,22 +55,26 @@ initclean(){
 doreacttoargs(){
     i=1;
     j=$#;
+    autolog="true"
     while [ $i -le $j ] 
       do
-          if [ "$1" = '-d' ]; then
+      if [ "$1" = '-m' ]; then
+            autolog="false"
+        fi
+        if [ "$1" = '-d' ]; then
             diagmode="true"
-          fi
-          if [ "$1" = '-nc' ]; then
+        fi
+        if [ "$1" = '-nc' ]; then
             runtheclient="false"
-          fi
-          if [ "$1" = '-c' ]; then
+        fi
+        if [ "$1" = '-c' ]; then
             runtheclient="true"
             # next argument assumed to be the client name
             # this needs so error trapping
             i=$((i + 1));
             shift 1;
             clientname="$1"       
-          fi
+        fi
         i=$((i + 1));
         shift 1;
       done
@@ -133,18 +138,22 @@ doscreensession(){
     # trick is used to get around that.
     # The sleep lines were found to be required and the minimum sleep time durations
     # were found to vary per OS and computer.
-    screen -dmS spawner
-    screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
-    sleep 0.7
-    screen -S thispicam -X detach
-    sleep 0.2
-    screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
-    sleep 0.2
-    screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
-    sleep 0.2
-    screen -S thispicam -X stuff "$(printf '%b' "camera-ctl\r")"
-    sleep 0.2
-    screen -r thispicam
+    if [ "$autolog" = "true" ]; then
+        screen -dmS spawner
+        screen -S spawner -X screen screen -dR thispicam "$piusbwebcamport" 115200
+        sleep 0.8
+        screen -S thispicam -X detach
+        sleep 0.4
+        screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
+        sleep 0.2
+        screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
+        sleep 0.2
+        screen -S thispicam -X stuff "$(printf '%b' "camera-ctl\r")"
+        sleep 0.2
+        screen -r thispicam
+    else
+        screen thispicam "$piusbwebcamport" 115200
+    fi
 }
 
 # show intro text
