@@ -51,8 +51,10 @@ The USB Raspberry Pi Zero showmewebcam is a plug-in-and-it-works webcam system w
 ### Runtime Arguments
 
 * **-d**: When **picamctl.sh** is started using the argument **-d**, for example "**./picamctl.sh  -d**", the script halts after printing out diagnostic information. This mode can be used for troubleshooting the serial device name it has selected to use for the connection. The **-d** argument diagnostic mode halts the script before the script repeatedly tries to see the showmewebcam device complete its booting process. Perform subsequent "**./picamctl.sh  -d**" runs to observe the booting process yourself.
+* **-m**: Do not automatically log in. The log in must be done manually.
 * **-nc**: The client application is not run.
 * **-c**: Set the client application to be the next argument text. For example **./picamctl -c "Quicktime player"** sets the client application to **Quicktime player** on typical Apple OS X systems. The client application name argument might need to be a full path name such as **"/usr/bin/webcamoid"** for Linux systems.
+* **-h**: Show help regarding runtime arguments.
 
 ### Details, Comments, Troubleshooting
 
