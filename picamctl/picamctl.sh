@@ -1,11 +1,12 @@
 #!/bin/sh
-# akseidel 02/06/21 02/17/21
+# akseidel 02/06/21 02/18/21
 # A script automating the steps to run showmewencam's "camera-ctl".
 # Script arguments:
-# -m  = manual logging in to Pi Zero
-# -d  = diagnostic halt
-# -nc = do not run the client
-# -c = run client and use next argument for the client name
+# -h help
+# -m manual logging in to Pi Zero
+# -d diagnostic halt
+# -nc do not run the client
+# -c run client and use next argument for the client name
 # For example: ./picamctl.sh -c "Quicktime Player"
 
 # init per the operating system
@@ -48,18 +49,31 @@ initclean(){
     screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
 }
 
+# are diagnostics wanted
+arediagwanted(){
+  if [ "$diagmode" = "true" ]; then
+    showdiagnostics
+    exit 0
+  fi
+}
+
 # React to arguments passed
-# -m  = manual logging in to Pi Zero
-# -d  = diagnostic halt
-# -nc = do not run the client
-# -c = run client and use next argument for the client name
+# -h show help
+# -m manual logging in to Pi Zero
+# -d diagnostic halt
+# -nc do not run the client
+# -c run client and use next argument for the client name
 doreacttoargs(){
     i=1;
     j=$#;
     autolog="true"
     while [ $i -le $j ] 
       do
-      if [ "$1" = '-m' ]; then
+        if [ "$1" = '-h' ]; then
+            showhelp
+            exit 0
+        fi
+        if [ "$1" = '-m' ]; then
             autolog="false"
         fi
         if [ "$1" = '-d' ]; then
@@ -79,21 +93,38 @@ doreacttoargs(){
         i=$((i + 1));
         shift 1;
       done
+}
 
-      if [ "$diagmode" = "true" ]; then
-          printf "\nDiagnostic stop.\n"
-          printf "OS: %s\n" "$(uname -s)"
-          printf "runtheclient: %s\n" "$runtheclient"
-          printf "clientname: %s\n" "$clientname"
-          printf "portnamepat: %s\n" "$portnamepat"
-          printf "searching: /dev/%s*\n" "$portnamepat"
-          printf "serialportlist: %s\n" "$serialportlist"
-          printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
-          piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
-          printf "piusnwebcamport: %s\n" "$piusbwebcamport"
-          printf "Halted\n"
-          exit 0
-      fi
+# showdiagnostics
+showdiagnostics(){
+    printf "\nDiagnostic stop and report\n"
+    printf "OS: %s\n" "$(uname -s)"
+    printf "runtheclient: %s\n" "$runtheclient"
+    printf "clientname: %s\n" "$clientname"
+    printf "portnamepat: %s\n" "$portnamepat"
+    printf "searching: /dev/%s*\n" "$portnamepat"
+    printf "serialportlist: %s\n" "$serialportlist"
+    printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
+    piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
+    printf "piusnwebcamport: %s\n" "$piusbwebcamport"
+    printf "autolog: %s\n" "$autolog"
+    printf "Done\n"
+}
+
+# showhelp
+showhelp(){
+    printf "\n Usage: picamctl.sh [OPTIONAL ARGUMENTS]\n"
+    printf " Purpose: Automate running camera-ctl on showmewencam system while also\n"
+    printf " running a client application to show the video.\n"
+    printf " -h  Shows this help.\n"
+    printf " -m  Makes serial connection but does not log in.\n"
+    printf " -d  Show settings and diagnostics on this script. Then halts.\n"
+    printf " -nc Do not run the client application.\n"
+    printf " -c \"client application name\" Name a specific client application to run.\n"
+    printf " The client application name might need to be a full pathname.\n"
+    printf "\n Example=> ./picamctl.sh -d -m -c \"/usr/bin/qv4l2\" -nc\n"
+    printf " Sets the client application name, but will not run it. Login will be\n"
+    printf " manual. The script will halt after showing all its settings.\n\n"
 }
 
 # run the client application
@@ -223,10 +254,11 @@ while [ "$countofserialportslist" -eq 0 ]; do
 
 initclean
 initperos
+doreacttoargs "$@"
 showintro
 getportnames
 rptportqty
-doreacttoargs "$@"  
+arediagwanted   
 checkbootstatus 
 rptportlist
 dosetport
