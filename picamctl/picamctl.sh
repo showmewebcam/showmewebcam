@@ -104,7 +104,7 @@ showdiagnostics(){
     printf "portnamepat: %s\n" "$portnamepat"
     printf "searching: /dev/%s*\n" "$portnamepat"
     printf "serialportlist: %s\n" "$serialportlist"
-    printf "countofserialportist: %s\n" "$((countofserialportslist+0))"
+    printf "countofserialportlist: %s\n" "$((countofserialportslist+0))"
     piusbwebcamport=$(printf "%s" "$serialportlist" | tr ' ' '\n' | tail -1)
     printf "piusnwebcamport: %s\n" "$piusbwebcamport"
     printf "autolog: %s\n" "$autolog"
