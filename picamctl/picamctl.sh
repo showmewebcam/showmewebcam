@@ -49,6 +49,7 @@ initclean(){
 }
 
 # React to arguments passed
+# -m  = manual logging in to Pi Zero
 # -d  = diagnostic halt
 # -nc = do not run the client
 # -c = run client and use next argument for the client name
