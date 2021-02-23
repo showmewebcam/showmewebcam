@@ -44,9 +44,8 @@ initperos(){
 initclean(){
     reset
     clear
-    # terminates all the ort screen sessions.
-    screen -ls | grep Attached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null 
-    screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
+    # terminates all the ort screen sessions due to this.
+    screen -ls | grep "spawner\|thispicam" | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null 
 }
 
 # are diagnostics wanted
