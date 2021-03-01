@@ -1,5 +1,5 @@
 #!/bin/sh
-# akseidel 02/06/21 02/18/21
+# akseidel 02/06/21 03/01/21
 # A script automating the steps to run showmewencam's "camera-ctl".
 # Script arguments:
 # -h help
@@ -26,6 +26,12 @@ initperos(){
         #portnamepat="tty*"
         runtheclient="true"
         clientname="/usr/bin/webcamoid"
+        if ! [ "$(id -u)" = 0 ]; then
+            printf "======================================================================\n"   
+            printf " ! On Linux this script may need to be run as root. ie using sudo     \n"       
+            printf "======================================================================\n"       
+            sleep 0.5
+        fi
         ;;
     # Yet to do Windows implementation
     #CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -37,7 +43,18 @@ initperos(){
         runtheclient="false"
         #clientname="???"
         ;;
-    esac
+    esac  
+}
+
+# check for screen on this system
+chk4screen(){
+if ! command -v "screen" >/dev/null 2>&1 ; then
+    printf "\nThere is a minor problem! The 'screen' command is required.\n"
+    printf "\nIt probably can be installed using the command:\n"
+    printf "\n     sudo apt install screen\n"
+    printf "\nThe administrative password may be necessary for the installation.\n\n"
+    exit 0
+fi
 }
 
 # initial cleanup
@@ -124,45 +141,68 @@ showhelp(){
     printf "\n Example=> ./picamctl.sh -d -m -c \"/usr/bin/qv4l2\" -nc\n"
     printf " Sets the client application name, but will not run it. Login will be\n"
     printf " manual. The script will halt after showing all its settings.\n\n"
+    printf " Linux users not operating as root user need to run this using sudo.\n"
+    printf " Example=> sudo ./picamctl.sh\n\n"
+}
+
+# msg no client found
+msgclientN(){
+   printf "  Unable to find application named %s!\n" "$1"
+}
+
+# msg client started
+msgclientY(){
+   printf "  Starting %s ...\n" "$1"
 }
 
 # run the client application
 runclient(){
+    # do run client?
     if [ "$runtheclient" = "true" ]; then
+        # is clientname not blank?
         if [ "$clientname" != "" ]; then
-            case "$(uname -s)" in
-            Darwin)
-                # -g causes application to open in background 
-                # https://scriptingosx.com/2017/02/the-macos-open-command/
-                open -g -a "$clientname"
-                ;;
-            Linux)
-                # Start a detached screen session running the client app
-                # refered as webcamapp
-                screen -dmS webcamapp "$clientname"
-                ;;
-            # Yet to do Windows implementation
-            #CYGWIN*|MINGW32*|MSYS*|MINGW*)
-            #    ;;
-            *)
-                ;;
-            esac
-            printf "Starting %s ...\n" "$clientname"
-            # A slight pause is required after starting the client to avoid having the newly starting
-            # client negociating with the piwebcam during the subsequent serial connection for
-            # starting the camerta-ctl utility. Sometimes this interfers with the process. Othertimes 
-            # it results warning statements issued by showmewebcam that are briefly visible before
-            # the camera-ctl inferface shpws up.
-            sleep 1.5
+                case "$(uname -s)" in
+                Darwin)
+                    # -g causes application to open in background 
+                    # -a application
+                    if ! open -g -a "$clientname" 2> /dev/null; then
+                        msgclientN "$clientname"
+                    else
+                        msgclientY "$clientname"
+                    fi
+                    ;;
+                Linux)
+                    # does client exist?
+                    if ! command -v "$clientname" >/dev/null 2>&1 ; then
+                        msgclientN "$clientname"
+                    else
+                        # Start a detached screen session running the client app
+                        # refered as webcamapp
+                        screen -dmS webcamapp "$clientname"
+                        msgclientY "$clientname"
+                    fi
+                    ;;
+                # Yet to do Windows implementation
+                #CYGWIN*|MINGW32*|MSYS*|MINGW*)
+                #    ;;
+                *)
+                    ;;
+                esac
+                # A slight pause is required after starting the client to avoid having the newly starting
+                # client negociating with the piwebcam during the subsequent serial connection for
+                # starting the camerta-ctl utility. Sometimes this interfers with the process. Othertimes 
+                # it results warning statements issued by showmewebcam that are briefly visible before
+                # the camera-ctl inferface shpws up.
+                sleep 1.5
         else
-            printf "The client name is blank.\n"
+            printf "  The client name is blank.\n"
         fi
     fi
 }
 
 # start the screen session
 doscreensession(){
-    printf "\nNow establishing serial connection using 'screen' ...\n"
+    printf "  Now establishing serial connection using 'screen' ...\n"
     # For some reason screen stuffing the user, password and camera-ctl to
     # a detached target screen does not work without the target screen having
     # been attached at some point. Here the nest screen into a spawner screen
@@ -175,6 +215,10 @@ doscreensession(){
         sleep 0.8
         screen -S thispicam -X detach
         sleep 0.4
+        # Even though we have the autologin version of showmewebcam there remains
+        # an underlying issue with showmewebcam that trashes the startup prompt by
+        # adding trash at the last line where camera-ctl would be entered. Leaving
+        # these now benign login lines happens to clear those extra characters.
         screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
         sleep 0.2
         screen -S thispicam -X stuff "$(printf "%b" 'root\r')"
@@ -183,7 +227,7 @@ doscreensession(){
         sleep 0.2
         screen -r thispicam
     else
-        screen thispicam "$piusbwebcamport" 115200
+        screen -S thispicam "$piusbwebcamport" 115200
     fi
 }
 
@@ -257,7 +301,7 @@ doreacttoargs "$@"
 showintro
 getportnames
 rptportqty
-arediagwanted   
+arediagwanted 
 checkbootstatus 
 rptportlist
 dosetport
