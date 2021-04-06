@@ -1,5 +1,5 @@
 #!/bin/sh
-# akseidel 02/06/21 03/01/21
+# akseidel 02/06/21 04/06/21
 # A script automating the steps to run showmewencam's "camera-ctl".
 # Script arguments:
 # -h help
@@ -9,11 +9,33 @@
 # -c run client and use next argument for the client name
 # For example: ./picamctl.sh -c "Quicktime Player"
 
+# print name header if needed
+doheader(){
+        printf "======================================================================\n"   
+        printf "                             picamctl                                 \n"
+}
+
+# linux run as root warning and maybe stop
+# takes argument as to whether or not to proceed
+notroot(){
+    if ! [ "$(id -u)" = 0 ]; then   
+            if [ "$1" = "stop" ]; then
+                printf "\n=== Halting now. This script must be run as root. ie using sudo ======\n\n"              
+                exit 0
+            else
+                printf "======================================================================\n"   
+                printf "\n     !!! On Linux this script must be run as root. ie using sudo    \n\n"  
+            fi
+        fi
+}
+
 # init per the operating system
 # portnamepat is the serial device port name pattern
 # The client is an application you want this script to also run.
 # Edit this section accordingly for your computer.
 initperos(){
+    doheader
+    chk4screen
     case "$(uname -s)" in
     Darwin)
         portnamepat="tty.usbmodem" 
@@ -26,12 +48,12 @@ initperos(){
         #portnamepat="tty*"
         runtheclient="true"
         clientname="/usr/bin/webcamoid"
-        if ! [ "$(id -u)" = 0 ]; then
-            printf "======================================================================\n"   
-            printf " ! On Linux this script may need to be run as root. ie using sudo     \n"       
-            printf "======================================================================\n"       
-            sleep 0.5
-        fi
+        notroot ok
+       # if ! [ "$(id -u)" = 0 ]; then
+       #     printf "======================================================================\n"   
+       #     printf "\n ! On Linux this script may need to be run as root. ie using sudo     \n\n"     
+       #     exit 0
+       # fi
         ;;
     # Yet to do Windows implementation
     #CYGWIN*|MINGW32*|MSYS*|MINGW*)
@@ -48,11 +70,15 @@ initperos(){
 
 # check for screen on this system
 chk4screen(){
-if ! command -v "screen" >/dev/null 2>&1 ; then
-    printf "\nThere is a minor problem! The 'screen' command is required.\n"
-    printf "\nIt probably can be installed using the command:\n"
-    printf "\n     sudo apt install screen\n"
-    printf "\nThe administrative password may be necessary for the installation.\n\n"
+if ! command -v "screen" > /dev/null 2>&1 ; then
+    printf "======================================================================\n" 
+    printf " ! There is a minor problem. The 'screen' utility command is required\n"
+    printf " for establishing communication to the Raspberry Pi. This utility\n"
+    printf " command needs to be installed.\n"
+    printf "\n It can be installed using the command:\n"
+    printf "\n     sudo apt install screen -y\n"
+    printf "\n The administrative password may be necessary for the installation.\n"
+    printf "======================================================================\n" 
     exit 0
 fi
 }
@@ -62,7 +88,7 @@ initclean(){
     reset
     clear
     # terminates all the ort screen sessions due to this.
-    screen -ls | grep "spawner\|thispicam" | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null 
+    screen -ls | grep "spawner\|thispicam" | cut -d. -f1 | awk '{print $1}' | xargs kill 2> /dev/null
 }
 
 # are diagnostics wanted
@@ -233,8 +259,6 @@ doscreensession(){
 
 # show intro text
 showintro(){
-    printf "======================================================================\n"   
-    printf "                             picamctl                                 \n"
     printf "======================================================================\n"       
     printf "  This script looks for a serial port device that could be the        \n"  
     printf "  Showmewebcam USB webcam device. It will connect to the device, log  \n"
@@ -306,6 +330,7 @@ checkbootstatus
 rptportlist
 dosetport
 runclient
+notroot stop
 doscreensession
 
 # end
