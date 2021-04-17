@@ -21,6 +21,7 @@ define PIWEBCAM_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/uvc-gadget $(TARGET_DIR)$(PIWEBCAM_DEST_DIR)
 	$(INSTALL) -D -m 0755 $(PIWEBCAM_PKGDIR)/multi-gadget.sh $(TARGET_DIR)$(PIWEBCAM_DEST_DIR)
 	$(INSTALL) -D -m 0755 $(PIWEBCAM_PKGDIR)/start-webcam.sh $(TARGET_DIR)$(PIWEBCAM_DEST_DIR)
+	$(INSTALL) -D -m 0644 $(PIWEBCAM_PKGDIR)/video_formats.txt $(TARGET_DIR)/etc/video_formats.txt
 endef
 
 define PIWEBCAM_INSTALL_INIT_SYSTEMD
