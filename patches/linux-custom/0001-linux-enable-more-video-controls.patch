@@ -7,8 +7,8 @@ index fb0a892..5c850be 100644
  MODULE_PARM_DESC(trace, "Trace level bitmask");
  
 +unsigned int uvc_gadget_processing_controls[2] = {255, 6};
-+module_param_array_named(bm_controls, uvc_gadget_processing_controls, uint, NULL, 0644);
-+MODULE_PARM_DESC(bm_controls, "Processing control availabilty bitfield");
++module_param_array_named(proc_controls, uvc_gadget_processing_controls, uint, NULL, 0644);
++MODULE_PARM_DESC(proc_controls, "Processing control availabilty bitfield");
 +
  /* --------------------------------------------------------------------------
   * Function descriptors
