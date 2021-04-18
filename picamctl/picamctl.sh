@@ -1,6 +1,14 @@
 #!/bin/sh
-# akseidel 02/06/21 04/06/21
-# A script automating the steps to run showmewencam's "camera-ctl".
+# akseidel 02/06/21 04/18/21
+# https://github.com/akseidel/ScriptsForShowMeWebCam
+# A script automating the steps to run showmewebcam's "camera-ctl".
+#
+# To use from the residing folder:
+# First mark as executable with "chmod +x picamctl.sh".
+# In OSX run by entering "./picamctl.sh".
+# In Linux run by entering "sudo ./picamctl.sh" followed by root
+# password.
+#
 # Script arguments:
 # -h help
 # -m manual logging in to Pi Zero
@@ -18,7 +26,7 @@ doheader(){
 # linux run as root warning and maybe stop
 # takes argument as to whether or not to proceed
 notroot(){
-    if ! [ "$(id -u)" = 0 ]; then   
+    if ! [ "$(id -u)" = 0 ] && [ "$(uname -s)" = "Linux" ]; then   
             if [ "$1" = "stop" ]; then
                 printf "\n=== Halting now. This script must be run as root. ie using sudo ======\n\n"              
                 exit 0
@@ -49,11 +57,6 @@ initperos(){
         runtheclient="true"
         clientname="/usr/bin/webcamoid"
         notroot ok
-       # if ! [ "$(id -u)" = 0 ]; then
-       #     printf "======================================================================\n"   
-       #     printf "\n ! On Linux this script may need to be run as root. ie using sudo     \n\n"     
-       #     exit 0
-       # fi
         ;;
     # Yet to do Windows implementation
     #CYGWIN*|MINGW32*|MSYS*|MINGW*)
