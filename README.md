@@ -171,6 +171,51 @@ The previous example sets all controls to disabled, and should thus be safe.
 The parameters directly correspond to the `bmControls` bitfields in the descriptor.
 Please, again, read the documentation linked above.
 
+### Configure available camera resolutions and streaming format
+
+The camera advertizes to the connected host PC the available resolutions and
+streaming formats of the video signal. Usually the best suitable resolution is
+chosen. The available resolutions can be reduced to enforce a specific setting.
+
+By default the camera uses the *Motion JPEG* codec to stream the video signal.
+For the host PC it offers several video resolutions up to 1080p HD video to
+choose from.
+
+These settings can be overwritten by copying the file `video_formats.txt` into
+the `/boot` folder and edit it.
+
+```bash
+cp /etc/video_formats.txt /boot
+```
+
+In this file one line corresponds to one video resolution and streaming format.
+Until now, only mjpeg and uncompressed video are supported. If you want to make
+the lower resolutions up to 720p HD unavailable, you have to comment out the
+first 4 resultions by prepending a `#` to that line.
+
+Please note that you have to reboot your piwebcam (power cyle it) for changes
+to take effect.
+
+Content of `video_formats.txt`
+```
+# Default Show-me webcam supported resolutions
+#
+# format: video format(mjpeg|uncompressed) x-dimension y-dimension
+#
+mjpeg 640 360
+mjpeg 640 480
+mjpeg 800 600
+mjpeg 1024 768
+mjpeg 1280 720
+mjpeg 1280 960
+mjpeg 1440 1080
+mjpeg 1536 864
+mjpeg 1600 900
+mjpeg 1600 1200
+mjpeg 1920 1080
+```
+ 
+
 ## Development & building
 
 Clone or download this repository. Then inside it:
