@@ -2,14 +2,48 @@ diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f
 index fb0a892..5c850be 100644
 --- a/drivers/usb/gadget/function/f_uvc.c
 +++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -814,8 +814,8 @@ static struct usb_function_instance *uvc_alloc_inst(void)
+@@ -34,6 +34,20 @@
+ module_param_named(trace, uvc_gadget_trace_param, uint, 0644);
+ MODULE_PARM_DESC(trace, "Trace level bitmask");
+ 
++unsigned int uvc_gadget_camera_terminal_controls[3] = {2, 0, 0};
++module_param_array_named(camera_terminal_controls, \
++		uvc_gadget_camera_terminal_controls, \
++		uint, NULL, 0644);
++MODULE_PARM_DESC(camera_terminal_controls, \
++		"Camera terminal control availabilty bitfield");
++
++unsigned int uvc_gadget_processing_unit_controls[2] = {255, 6};
++module_param_array_named(processing_unit_controls, \
++		uvc_gadget_processing_unit_controls, \
++		uint, NULL, 0644);
++MODULE_PARM_DESC(processing_unit_controls, \
++		"Processing unit control availabilty bitfield");
++
+ /* --------------------------------------------------------------------------
+  * Function descriptors
+  */
+@@ -802,9 +816,9 @@
+ 	cd->wObjectiveFocalLengthMax	= cpu_to_le16(0);
+ 	cd->wOcularFocalLength		= cpu_to_le16(0);
+ 	cd->bControlSize		= 3;
+-	cd->bmControls[0]		= 2;
+-	cd->bmControls[1]		= 0;
+-	cd->bmControls[2]		= 0;
++	cd->bmControls[0]		= uvc_gadget_camera_terminal_controls[0];
++	cd->bmControls[1]		= uvc_gadget_camera_terminal_controls[1];
++	cd->bmControls[2]		= uvc_gadget_camera_terminal_controls[2];
+ 
+ 	pd = &opts->uvc_processing;
+ 	pd->bLength			= UVC_DT_PROCESSING_UNIT_SIZE(2);
+@@ -814,8 +828,8 @@
  	pd->bSourceID			= 1;
  	pd->wMaxMultiplier		= cpu_to_le16(16*1024);
  	pd->bControlSize		= 2;
 -	pd->bmControls[0]		= 1;
 -	pd->bmControls[1]		= 0;
-+	pd->bmControls[0]		= 255;
-+	pd->bmControls[1]		= 6;
++	pd->bmControls[0]		= uvc_gadget_processing_unit_controls[0];
++	pd->bmControls[1]		= uvc_gadget_processing_unit_controls[1];
  	pd->iProcessing			= 0;
  
  	od = &opts->uvc_output_terminal;
