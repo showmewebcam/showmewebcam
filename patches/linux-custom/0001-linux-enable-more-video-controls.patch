@@ -2,22 +2,28 @@ diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f
 index fb0a892..5c850be 100644
 --- a/drivers/usb/gadget/function/f_uvc.c
 +++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -34,6 +34,14 @@
+@@ -34,6 +34,20 @@
  module_param_named(trace, uvc_gadget_trace_param, uint, 0644);
  MODULE_PARM_DESC(trace, "Trace level bitmask");
  
 +unsigned int uvc_gadget_camera_terminal_controls[3] = {2, 0, 0};
-+module_param_array_named(camera_controls, uvc_gadget_camera_terminal_controls, uint, NULL, 0644);
-+MODULE_PARM_DESC(camera_controls, "Camera control availabilty bitfield");
++module_param_array_named(camera_terminal_controls, \
++		uvc_gadget_camera_terminal_controls, \
++		uint, NULL, 0644);
++MODULE_PARM_DESC(camera_terminal_controls, \
++		"Camera terminal control availabilty bitfield");
 +
-+unsigned int uvc_gadget_processing_controls[2] = {255, 6};
-+module_param_array_named(proc_controls, uvc_gadget_processing_controls, uint, NULL, 0644);
-+MODULE_PARM_DESC(proc_controls, "Processing control availabilty bitfield");
++unsigned int uvc_gadget_processing_unit_controls[2] = {255, 6};
++module_param_array_named(processing_unit_controls, \
++		uvc_gadget_processing_unit_controls, \
++		uint, NULL, 0644);
++MODULE_PARM_DESC(processing_unit_controls, \
++		"Processing unit control availabilty bitfield");
 +
  /* --------------------------------------------------------------------------
   * Function descriptors
   */
-@@ -802,9 +810,9 @@
+@@ -802,9 +816,9 @@
  	cd->wObjectiveFocalLengthMax	= cpu_to_le16(0);
  	cd->wOcularFocalLength		= cpu_to_le16(0);
  	cd->bControlSize		= 3;
@@ -30,14 +36,14 @@ index fb0a892..5c850be 100644
  
  	pd = &opts->uvc_processing;
  	pd->bLength			= UVC_DT_PROCESSING_UNIT_SIZE(2);
-@@ -814,8 +822,8 @@
+@@ -814,8 +828,8 @@
  	pd->bSourceID			= 1;
  	pd->wMaxMultiplier		= cpu_to_le16(16*1024);
  	pd->bControlSize		= 2;
 -	pd->bmControls[0]		= 1;
 -	pd->bmControls[1]		= 0;
-+	pd->bmControls[0]		= uvc_gadget_processing_controls[0];
-+	pd->bmControls[1]		= uvc_gadget_processing_controls[1];
++	pd->bmControls[0]		= uvc_gadget_processing_unit_controls[0];
++	pd->bmControls[1]		= uvc_gadget_processing_unit_controls[1];
  	pd->iProcessing			= 0;
  
  	od = &opts->uvc_output_terminal;
