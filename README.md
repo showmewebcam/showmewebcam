@@ -153,6 +153,28 @@ You can edit `camera.txt` on-target by remounting `/boot` read-write:
 mount -o remount,rw /boot
 ```
 
+### Overriding the controls available to the host computer
+
+Since version 1.80 we try to expose as many controls as possible via the UVC
+standard, which are then translated back to the controls that are available
+on your specific camera module. Some host operating systems may be confused
+by controls that are advertised via USB, but don't turn out to work, due to
+not being available for your specific camera module.
+
+You can therefore customize the controls advertised to the computer via the
+USB device descriptor. *Warning*: This is an advanced user feature only.
+You should probably consult the [UVC controls bitmap documentation] on GitHub.
+
+You can add the parameters to `cmdline.txt` on the boot volume as follows:
+
+```
+usb_f_uvc.camera_terminal_controls=0,0,0 usb_f_uvc.processing_unit_controls=0,0
+```
+
+The previous example sets all controls to disabled, and should thus be safe.
+The parameters directly correspond to the `bmControls` bitfields in the descriptor.
+Please, again, read the documentation linked above.
+
 ## Development & building
 
 Clone or download this repository. Then inside it:
@@ -175,3 +197,5 @@ Clone or download this repository. Then inside it:
 - ARM fever: https://armphibian.wordpress.com/2019/10/01/how-to-build-raspberry-pi-zero-w-buildroot-image/
 - The repository icon is attributed to the GNOME project
 
+
+[UVC controls bitmap documentation]: https://github.com/showmewebcam/showmewebcam/wiki/UVC-Controls
