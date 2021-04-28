@@ -35,11 +35,7 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 
 ## Instructions
 
-- Watch the [introduction video](https://youtu.be/nH2G16YoBT4)
-- [Assemble the camera with the Raspberry Pi](https://www.youtube.com/watch?v=8fcbP7lEdzY&t=365s)
-- Download the latest release (see below)
-- Use Etcher or `dd` to write the image to the Micro SD card
-- Use the USB data port (the one in the middle of the Raspberry Pi, not the one on the edge) to connect to a computer
+- [Follow the Cytron tutorial](https://tutorial.cytron.io/2020/12/29/raspberry-pi-zero-usb-webcam/).
 - Smile & Enjoy!
 
 ## Stable releases
