@@ -29,9 +29,9 @@ mkdir -p configs/c.2
 mkdir -p configs/c.2/strings/0x409
 echo 100000000d2386db         > strings/0x409/serialnumber
 echo "Show-me Webcam Project" > strings/0x409/manufacturer
-echo "Piwebcam"               > strings/0x409/product
+echo "PiSight"               > strings/0x409/product
 echo 500                      > configs/c.2/MaxPower
-echo "Piwebcam"               > configs/c.2/strings/0x409/configuration
+echo "PiSight"               > configs/c.2/strings/0x409/configuration
 
 config_usb_serial () {
   mkdir -p functions/acm.usb0
@@ -64,16 +64,16 @@ EOF
 config_usb_webcam () {
   mkdir -p functions/uvc.usb0/control/header/h
 
-  config_frame mjpeg m  640  360
-  config_frame mjpeg m  640  480
-  config_frame mjpeg m  800  600
-  config_frame mjpeg m 1024  768
-  config_frame mjpeg m 1280  720
-  config_frame mjpeg m 1280  960
-  config_frame mjpeg m 1440 1080
-  config_frame mjpeg m 1536  864
-  config_frame mjpeg m 1600  900
-  config_frame mjpeg m 1600 1200
+  #config_frame mjpeg m  640  360
+  #config_frame mjpeg m  640  480
+  #config_frame mjpeg m  800  600
+  #config_frame mjpeg m 1024  768
+  #config_frame mjpeg m 1280  720
+  #config_frame mjpeg m 1280  960
+  #config_frame mjpeg m 1440 1080
+  #config_frame mjpeg m 1536  864
+  #config_frame mjpeg m 1600  900
+  #config_frame mjpeg m 1600 1200
   config_frame mjpeg m 1920 1080
 
   mkdir -p functions/uvc.usb0/streaming/header/h
