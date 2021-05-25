@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CAMERA_CONTROL_VERSION = c50efb3c83be86a74fe64a72e0c2c231625138b6
+CAMERA_CONTROL_VERSION = 635f2cbb1dfb34bbcb186965c4ed8fee075fe63d
 CAMERA_CONTROL_SITE = git://github.com/peterbay/camera-control.git
 CAMERA_CONTROL_LICENSE = GPL-3.0+
 CAMERA_CONTROL_LICENSE_FILES = LICENSE
