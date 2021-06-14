@@ -10,6 +10,11 @@ if [ -f "/boot/enable-serial-debug" ] ; then
   CONFIGURE_USB_SERIAL=true
 fi
 
+VIDEO_FORMATS_FILE=/etc/video_formats.txt
+
+# location of video_formats.txt file if overwritten by the user
+VIDEO_FORMATS_USER_FILE=/boot/video_formats.txt
+
 CONFIG=/sys/kernel/config/usb_gadget/piwebcam
 mkdir -p "$CONFIG"
 cd "$CONFIG" || exit 1
@@ -64,27 +69,29 @@ EOF
 config_usb_webcam () {
   mkdir -p functions/uvc.usb0/control/header/h
 
-  config_frame mjpeg m  640  360
-  config_frame mjpeg m  640  480
-  config_frame mjpeg m  800  600
-  config_frame mjpeg m 1024  768
-  config_frame mjpeg m 1280  720
-  config_frame mjpeg m 1280  960
-  config_frame mjpeg m 1440 1080
-  config_frame mjpeg m 1536  864
-  config_frame mjpeg m 1600  900
-  config_frame mjpeg m 1600 1200
-  config_frame mjpeg m 1920 1080
+  if [ -r $VIDEO_FORMATS_USER_FILE ] ; then
+      FORMATS_FILE=$VIDEO_FORMATS_USER_FILE
+  else
+      FORMATS_FILE=$VIDEO_FORMATS_FILE
+  fi
 
   mkdir -p functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/mjpeg/m  functions/uvc.usb0/streaming/header/h
   ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/fs
   ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/hs
   ln -s functions/uvc.usb0/control/header/h   functions/uvc.usb0/control/class/fs
 
   ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
-}
 
+   grep -E "^(mjpeg|uncompressed)\s+[[:digit:]]+\s+[[:digit:]]+" $FORMATS_FILE | sed -E "s/\s+/ /g" | while read -r line
+  do
+    VIDEO_FORMAT=$(echo "$line" | cut -d ' ' -f1)
+    HDR_DESC=$(echo "$VIDEO_FORMAT" | cut -c 1)
+    X=$(echo "$line" | cut -d ' ' -f2)
+    Y=$(echo "$line" | cut -d ' ' -f3)
+    config_frame "$VIDEO_FORMAT" "$HDR_DESC" "$X" "$Y"
+    ln -sf "functions/uvc.usb0/streaming/$VIDEO_FORMAT/$HDR_DESC"  functions/uvc.usb0/streaming/header/h
+  done
+} 
 # Check if camera is installed correctly
 if [ ! -e /dev/video0 ] ; then
   echo "I did not detect a camera connected to the Pi. Please check your hardware."
