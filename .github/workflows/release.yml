@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '2021.02.1'
+      BUILDROOT_VERSION: '2021.02.4'
       BUILDROOT_DIR: 'buildroot'
 
     strategy:
@@ -52,6 +52,11 @@ jobs:
           # Stupid hack to invalidate cache from UI
           # https://github.com/actions/cache/issues/2#issuecomment-673493515
           key: ${{ matrix.raspberry }}-${{ env.BUILDROOT_DIR }}-${{ env.BUILDROOT_VERSION }}-${{ secrets.CACHE_VERSION }}
+
+      # Github Actions are sometimes blocked from this mirror
+      # https://github.com/actions/virtual-environments/issues/2577
+      - name: Blocked mirror workaround
+        run: echo "127.0.0.1 invisible-mirror.net" | sudo tee -a /etc/hosts
 
       - name: Download Buildroot
         if: steps.restore-cache.outputs.cache-hit != 'true'
