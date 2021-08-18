@@ -13,4 +13,3 @@ mjpeg 1536 864
 mjpeg 1600 900
 mjpeg 1600 1200
 mjpeg 1920 1080
- 

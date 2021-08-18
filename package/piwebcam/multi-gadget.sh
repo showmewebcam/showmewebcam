@@ -56,9 +56,9 @@ config_frame () {
   echo "$WIDTH"                    > "$FRAMEDIR"/wWidth
   echo "$HEIGHT"                   > "$FRAMEDIR"/wHeight
   echo 333333                      > "$FRAMEDIR"/dwDefaultFrameInterval
-  echo $((WIDTH * HEIGHT * 80))  > "$FRAMEDIR"/dwMinBitRate
-  echo $((WIDTH * HEIGHT * 160)) > "$FRAMEDIR"/dwMaxBitRate
-  echo $((WIDTH * HEIGHT * 2))   > "$FRAMEDIR"/dwMaxVideoFrameBufferSize
+  echo $((WIDTH * HEIGHT * 80))    > "$FRAMEDIR"/dwMinBitRate
+  echo $((WIDTH * HEIGHT * 160))   > "$FRAMEDIR"/dwMaxBitRate
+  echo $((WIDTH * HEIGHT * 2))     > "$FRAMEDIR"/dwMaxVideoFrameBufferSize
   cat <<EOF > "$FRAMEDIR"/dwFrameInterval
 333333
 400000
@@ -70,28 +70,30 @@ config_usb_webcam () {
   mkdir -p functions/uvc.usb0/control/header/h
 
   if [ -r $VIDEO_FORMATS_USER_FILE ] ; then
-      FORMATS_FILE=$VIDEO_FORMATS_USER_FILE
+    FORMATS_FILE=$VIDEO_FORMATS_USER_FILE
   else
-      FORMATS_FILE=$VIDEO_FORMATS_FILE
+    FORMATS_FILE=$VIDEO_FORMATS_FILE
   fi
 
+  grep -E "^(mjpeg|uncompressed)[[:space:]]+[[:digit:]]+[[:space:]]+[[:digit:]]+" $FORMATS_FILE | while read -r line
+  do
+    VIDEO_FORMAT=$(echo "$line" | awk '{print $1}')
+    HDR_DESC=$(echo "$VIDEO_FORMAT" | cut -c 1)
+    X=$(echo "$line" | awk '{print ($2+0)}')
+    Y=$(echo "$line" | awk '{print ($3+0)}')
+    echo "Enabling video format ${X}x${Y} ($VIDEO_FORMAT)"
+    config_frame "$VIDEO_FORMAT" "$HDR_DESC" "$X" "$Y"
+  done
+
   mkdir -p functions/uvc.usb0/streaming/header/h
+  ln -s functions/uvc.usb0/streaming/mjpeg/m  functions/uvc.usb0/streaming/header/h
   ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/fs
   ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/hs
   ln -s functions/uvc.usb0/control/header/h   functions/uvc.usb0/control/class/fs
 
   ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
+}
 
-   grep -E "^(mjpeg|uncompressed)\s+[[:digit:]]+\s+[[:digit:]]+" $FORMATS_FILE | sed -E "s/\s+/ /g" | while read -r line
-  do
-    VIDEO_FORMAT=$(echo "$line" | cut -d ' ' -f1)
-    HDR_DESC=$(echo "$VIDEO_FORMAT" | cut -c 1)
-    X=$(echo "$line" | cut -d ' ' -f2)
-    Y=$(echo "$line" | cut -d ' ' -f3)
-    config_frame "$VIDEO_FORMAT" "$HDR_DESC" "$X" "$Y"
-    ln -sf "functions/uvc.usb0/streaming/$VIDEO_FORMAT/$HDR_DESC"  functions/uvc.usb0/streaming/header/h
-  done
-} 
 # Check if camera is installed correctly
 if [ ! -e /dev/video0 ] ; then
   echo "I did not detect a camera connected to the Pi. Please check your hardware."
