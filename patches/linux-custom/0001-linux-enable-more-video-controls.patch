@@ -6,14 +6,14 @@ index fb0a892..5c850be 100644
  module_param_named(trace, uvc_gadget_trace_param, uint, 0644);
  MODULE_PARM_DESC(trace, "Trace level bitmask");
  
-+unsigned int uvc_gadget_camera_terminal_controls[3] = {2, 0, 0};
++unsigned int uvc_gadget_camera_terminal_controls[3] = {0, 0, 0};
 +module_param_array_named(camera_terminal_controls, \
 +		uvc_gadget_camera_terminal_controls, \
 +		uint, NULL, 0644);
 +MODULE_PARM_DESC(camera_terminal_controls, \
 +		"Camera terminal control availabilty bitfield");
 +
-+unsigned int uvc_gadget_processing_unit_controls[2] = {255, 6};
++unsigned int uvc_gadget_processing_unit_controls[2] = {11, 0};
 +module_param_array_named(processing_unit_controls, \
 +		uvc_gadget_processing_unit_controls, \
 +		uint, NULL, 0644);
