@@ -128,9 +128,13 @@ jobs:
         with:
           name: release
 
+      - name: Create checksums file
+        run: |
+          sha256sum "sdcard*" > CHECKSUMS.sha256
+
       - name: Upload Binaries to Release
         uses: alexellis/upload-assets@0.2.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          asset_paths: '["sdcard*"]'
+          asset_paths: '["sdcard*", "CHECKSUMS.sha256"]'
