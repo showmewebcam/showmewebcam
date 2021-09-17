@@ -88,10 +88,11 @@ config_usb_webcam () {
   done
 
   mkdir -p functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/mjpeg/m  functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/fs
-  ln -s functions/uvc.usb0/streaming/header/h functions/uvc.usb0/streaming/class/hs
-  ln -s functions/uvc.usb0/control/header/h   functions/uvc.usb0/control/class/fs
+  ln -s functions/uvc.usb0/streaming/mjpeg/m        functions/uvc.usb0/streaming/header/h
+  ln -s functions/uvc.usb0/streaming/uncompressed/u functions/uvc.usb0/streaming/header/h
+  ln -s functions/uvc.usb0/streaming/header/h       functions/uvc.usb0/streaming/class/fs
+  ln -s functions/uvc.usb0/streaming/header/h       functions/uvc.usb0/streaming/class/hs
+  ln -s functions/uvc.usb0/control/header/h         functions/uvc.usb0/control/class/fs
 
   ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
 }
