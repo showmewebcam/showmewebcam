@@ -23,7 +23,7 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 
 ## What works and what doesn't
 
-- The camera is known to work on Linux, Windows 10 and Mac OS
+- The camera is known to work on Linux, Windows 10 and macOS. Note: [Newer macOS versions, such as Monterey, have compatibility issues with Show-me-webcam and is being investigated](https://github.com/showmewebcam/showmewebcam/issues/164).
 - The camera is known to work with Zoom, Teams, Skype, Jitsi, Firefox and Chrome
 - Here's a compatibility matrix as far as we could test. Let us know if you had the chance to test other variants:
 
