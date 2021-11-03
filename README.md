@@ -167,9 +167,15 @@ You can add the parameters to `cmdline.txt` on the boot volume as follows:
 usb_f_uvc.camera_terminal_controls=0,0,0 usb_f_uvc.processing_unit_controls=0,0
 ```
 
-The previous example sets all controls to disabled, and should thus be safe.
+The above example disables all controls and should thus be safe.
 The parameters directly correspond to the `bmControls` bitfields in the descriptor.
 Please, again, read the documentation linked above.
+
+An example for enabling all the available controls for the 8 Mpixel (v2) camera for the Raspberry Pi 4B is given below:
+
+```
+usb_f_uvc.camera_terminal_controls=10,0,0 usb_f_uvc.processing_unit_controls=219,4
+```
 
 ### Configure available camera resolutions and streaming format
 
