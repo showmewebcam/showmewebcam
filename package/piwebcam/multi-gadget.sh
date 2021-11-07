@@ -30,19 +30,19 @@ echo 0x01 > bDeviceProtocol
 echo 0x40 > bMaxPacketSize0
 
 mkdir -p strings/0x409
-mkdir -p configs/c.2
-mkdir -p configs/c.2/strings/0x409
+mkdir -p configs/c.1
+mkdir -p configs/c.1/strings/0x409
 
 SERIAL=$(cat /sys/firmware/devicetree/base/serial-number)
 echo "$SERIAL"                > strings/0x409/serialnumber
 echo "Show-me Webcam Project" > strings/0x409/manufacturer
 echo "Piwebcam"               > strings/0x409/product
-echo "Piwebcam"               > configs/c.2/strings/0x409/configuration
-echo 500                      > configs/c.2/MaxPower
+echo "Piwebcam"               > configs/c.1/strings/0x409/configuration
+echo 500                      > configs/c.1/MaxPower
 
 config_usb_serial () {
   mkdir -p functions/acm.usb0
-  ln -s functions/acm.usb0 configs/c.2/acm.usb0
+  ln -s functions/acm.usb0 configs/c.1/acm.usb0
 }
 
 config_frame () {
@@ -94,7 +94,7 @@ config_usb_webcam () {
   ln -s functions/uvc.usb0/streaming/header/h       functions/uvc.usb0/streaming/class/hs
   ln -s functions/uvc.usb0/control/header/h         functions/uvc.usb0/control/class/fs
 
-  ln -s functions/uvc.usb0 configs/c.2/uvc.usb0
+  ln -s functions/uvc.usb0 configs/c.1/uvc.usb0
 }
 
 # Check if camera is installed correctly
