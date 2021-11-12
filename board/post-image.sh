@@ -58,6 +58,17 @@ boot_delay=0
 __EOF__
 		fi
 
+		# Set camera autodetection to 1
+		if ! grep -qE '^camera_auto_detect=1' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
+			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+camera_auto_detect=1
+__EOF__
+		fi
+
+        # raspi-config https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config
+        # sets gpu_mem to 128 mb when camera is enabled, so do it too
+        sed -e '/^gpu_mem_.*=/s,=.*,=128,' -i "${BINARIES_DIR}/rpi-firmware/config.txt"
+
 		# Set turbo mode for boot
 		if ! grep -qE '^initial_turbo' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
 			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"

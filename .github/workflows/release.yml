@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '2021.02.4'
+      BUILDROOT_VERSION: '2021.08.2'
       BUILDROOT_DIR: 'buildroot'
 
     strategy:
