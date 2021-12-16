@@ -20,12 +20,12 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '2021.02.4'
+      BUILDROOT_VERSION: '2021.08.2'
       BUILDROOT_DIR: 'buildroot'
 
     strategy:
       matrix:
-        raspberry: ['raspberrypi0', 'raspberrypi0w', 'raspberrypi4']
+        raspberry: ['raspberrypi0', 'raspberrypi0_2', 'raspberrypi4']
 
     steps:
       - name: Checkout Code
@@ -129,8 +129,7 @@ jobs:
           name: release
 
       - name: Create checksums file
-        run: |
-          sha256sum "sdcard*" > CHECKSUMS.sha256
+        run: sha256sum sdcard* > CHECKSUMS.sha256
 
       - name: Upload Binaries to Release
         uses: alexellis/upload-assets@0.2.2
