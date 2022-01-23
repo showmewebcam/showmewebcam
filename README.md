@@ -205,15 +205,16 @@ Please note that you have to reboot your piwebcam (power cycle it) for changes t
 
 Clone or download this repository. Then inside it:
 
-- Download the latest Buildroot stable from https://buildroot.org/download.html
-- Extract it and rename it to `buildroot`
+- Clone the repository with submodules:
+  - `git clone --recurse-submodules https://github.com/showmewebcam/showmewebcam.git`
 - Run build command:
   - `./build-showmewebcam.sh raspberrypi0w` to build Raspberry Pi Zero W (with Wifi) image.
   - `./build-showmewebcam.sh raspberrypi0` to build Raspberry Pi Zero (without Wifi) image.
   - `./build-showmewebcam.sh raspberrypi4` to build Raspberry Pi 4 image.
-  - **IMPORTANT**: If you didn't rename your Buildroot directory to `buildroot` or if you put it somewhere else you need to set the Buildroot path manually, e.g. `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0`
 - The resulting image `sdcard.img` will be in the `output/$BOARDNAME/images` folder
 - If you add a `camera.txt` file to the root of this repository, the contents will be automatically added to `/boot/camera.txt`
+
+**Note:** If you want to use external Buildroot directory you need to set the Buildroot path manually, e.g. `BUILDROOT_DIR=../buildroot ./build-showmewebcam.sh raspberrypi0`
 
 ## Credits
 
