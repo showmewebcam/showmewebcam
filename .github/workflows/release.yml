@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '2021.02.4'
+      BUILDROOT_VERSION: '170f42eb6b891e06fd500483c92a5e00f77d1dc6'
       BUILDROOT_DIR: 'buildroot'
 
     strategy:
@@ -32,6 +32,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          submodules: 'recursive'
 
       # Retrieve annotated tags as the checkout above doesn't do this
       # https://github.com/actions/checkout/issues/217#issuecomment-636481619
@@ -57,13 +58,6 @@ jobs:
       # https://github.com/actions/virtual-environments/issues/2577
       - name: Blocked mirror workaround
         run: echo "127.0.0.1 invisible-mirror.net" | sudo tee -a /etc/hosts
-
-      - name: Download Buildroot
-        if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: |
-          wget -qc https://buildroot.org/downloads/buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
-          tar -zxf buildroot-${{ env.BUILDROOT_VERSION }}.tar.gz
-          mv buildroot-${{ env.BUILDROOT_VERSION }} ${{ env.BUILDROOT_DIR }}
 
       - name: Build Image
         run: |
