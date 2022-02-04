@@ -20,7 +20,6 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     env:
-      BUILDROOT_VERSION: '170f42eb6b891e06fd500483c92a5e00f77d1dc6'
       BUILDROOT_DIR: 'buildroot'
 
     strategy:
@@ -42,6 +41,7 @@ jobs:
           echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "GIT_TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "Current version: $(git describe)"
+          echo "BUILDROOT_VERSION=$(git rev-parse --short HEAD:${BUILDROOT_DIR})" >> $GITHUB_ENV
 
       - name: Cache Build
         id: restore-cache
