@@ -123,8 +123,7 @@ jobs:
           name: release
 
       - name: Create checksums file
-        run: |
-          sha256sum "sdcard*" > CHECKSUMS.sha256
+        run: sha256sum sdcard* > CHECKSUMS.sha256
 
       - name: Upload Binaries to Release
         uses: alexellis/upload-assets@0.2.2
