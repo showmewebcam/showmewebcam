@@ -38,9 +38,7 @@ jobs:
       - name: Fetch Git Tag History
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-          echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "GIT_TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "Current version: $(git describe)"
+          echo "SMW_VERSION=$(buildroot/support/scripts/setlocalversion)" >> $GITHUB_ENV
           echo "BUILDROOT_VERSION=$(git rev-parse --short HEAD:${BUILDROOT_DIR})" >> $GITHUB_ENV
 
       - name: Cache Build
@@ -64,26 +62,26 @@ jobs:
           # Force a piwebcam rebuild every time
           rm -fr output/*/build/piwebcam*
           sh build-showmewebcam.sh ${{ matrix.raspberry }}
-          cp output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          cp output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
 
       - name: Upload Image
         uses: actions/upload-artifact@v2
         with:
-          name: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
-          path: sdcard-${{ matrix.raspberry }}-${{ env.SHA }}.img
+          name: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
+          path: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
 
       - name: Prepare Release Image
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          cp output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.GIT_TAG_NAME }}.img
-          gzip sdcard-${{ matrix.raspberry }}-${{ env.GIT_TAG_NAME }}.img
+          cp output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
+          gzip sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
 
       - name: Store Release Image
         if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v2
         with:
           name: release
-          path: sdcard-${{ matrix.raspberry }}-${{ env.GIT_TAG_NAME }}.img.gz
+          path: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img.gz
 
   release:
     if: startsWith(github.ref, 'refs/tags/v')
