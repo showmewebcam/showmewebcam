@@ -33,3 +33,14 @@ ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel
 if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
   ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
 fi
+
+# Set os-release file
+SHOWMEWEBCAM_VERSION=$(support/scripts/setlocalversion "${BR2_EXTERNAL_PICAM_PATH}")
+
+cat > "${TARGET_DIR}"/usr/lib/os-release <<EOF
+NAME="Show-me webcam"
+VERSION=${SHOWMEWEBCAM_VERSION}
+ID=showmewebcam
+VERSION_ID=${SHOWMEWEBCAM_VERSION}
+PRETTY_NAME="Show-me webcam ${SHOWMEWEBCAM_VERSION}"
+EOF
