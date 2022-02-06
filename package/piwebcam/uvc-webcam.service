@@ -1,5 +1,5 @@
 [Unit]
-Description=Starts Raspberry Pi UVC webcam service
+Description=Raspberry Pi UVC webcam
 After=usb-gadget-config.service
 
 [Service]
