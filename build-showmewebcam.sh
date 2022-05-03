@@ -28,16 +28,7 @@ esac
 CONFIG_="BR2" KCONFIG_CONFIG="configs/${BOARDNAME}_defconfig" "$BUILDROOT_DIR/support/kconfig/merge_config.sh" -m -r configs/config "configs/$BOARDNAME"
 sed "1i ### DO NOT EDIT, this file was automatically generated\n" -i "configs/${BOARDNAME}_defconfig"
 
-# Merge kernel configurations
-if [ -f "board/linux-${BOARDNAME}.config" ]; then
-  KCONFIG_CONFIG="board/linux.config" "$BUILDROOT_DIR/support/kconfig/merge_config.sh" -m -r board/linux-base.config "board/linux-${BOARDNAME}.config"
-else
-  cp board/linux-base.config board/linux.config
-fi
-sed "1i ### DO NOT EDIT, this file was automatically generated\n" -i board/linux.config
-
 # Create full buildroot configuration
 BR2_EXTERNAL="$(pwd)" make O="$(pwd)/output/$BOARDNAME" -C "$BUILDROOT_DIR" "${BOARDNAME}_defconfig"
 
-# Build
 make -C "output/$BOARDNAME" all

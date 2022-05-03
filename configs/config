@@ -10,6 +10,8 @@ BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,0b54dbda3cca2beb51e236a25738784e90853b64)/linux-0b54dbda3cca2beb51e236a25738784e90853b64.tar.gz"
 BR2_LINUX_KERNEL_PATCH="$(BR2_EXTERNAL_PICAM_PATH)/patches/linux-custom"
+#BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(BR2_EXTERNAL_PICAM_PATH)/board/linux-additional.config"
+BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(BR2_EXTERNAL_PICAM_PATH)/board/linux-base.config"
 
 # Build the DTBs for A/B from the kernel sources: the zero is the same
 # as the A+ model, just in a different form-factor
@@ -20,7 +22,6 @@ BR2_LINUX_KERNEL_LZ4=y
 
 BR2_PACKAGE_RPI_FIRMWARE=y
 BR2_PACKAGE_RPI_FIRMWARE_BOOTCODE_BIN=y
-BR2_PACKAGE_RPI_FIRMWARE_CONFIG_FILE="board/raspberrypi0/config_default.txt"
 # BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS is not set
 
 # Required tools to create the SD image
@@ -35,7 +36,6 @@ BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
 BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_PICAM_PATH)/rootfs"
 BR2_ROOTFS_POST_BUILD_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/post-build.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_PICAM_PATH)/board/post-image.sh"
-BR2_ROOTFS_POST_SCRIPT_ARGS="--configure-picam"
 
 # Packages
 BR2_PACKAGE_PIWEBCAM=y
