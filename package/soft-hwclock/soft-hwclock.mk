@@ -5,7 +5,7 @@
 ################################################################################
 
 SOFT_HWCLOCK_VERSION = aeaea431fb9d17005fefeeb34b80ea6fcc76adde
-SOFT_HWCLOCK_SITE = git://github.com/kristjanvalur/soft-hwclock.git
+SOFT_HWCLOCK_SITE = https://github.com/kristjanvalur/soft-hwclock.git
 SOFT_HWCLOCK_LICENSE = MIT
 SOFT_HWCLOCK_LICENSE_FILES = LICENSE
 SOFT_HWCLOCK_DEST_DIR = /opt/soft-hwclock
