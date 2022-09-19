@@ -11,9 +11,6 @@ mkdir -p "${TARGET_DIR}"/etc/systemd/system/getty.target.wants
 ln -sf /usr/lib/systemd/system/serial-getty@.service "${TARGET_DIR}"/etc/systemd/system/getty.target.wants/serial-getty@ttyGS0.service
 sed '/^ExecStart=/ s/-o .-p -- ..u./--skip-login --noclear --noissue --login-options "-f root"/' -i "${TARGET_DIR}"/usr/lib/systemd/system/serial-getty@.service
 
-# Add wireless wpa for wlan0
-#ln -sf /usr/lib/systemd/system/wpa_supplicant@.service "${TARGET_DIR}"/etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
-
 if ! grep -qE '/var' "${TARGET_DIR}/etc/fstab"; then
 	echo 'tmpfs           /var            tmpfs   rw,mode=1777,size=64m' >> "${TARGET_DIR}/etc/fstab"
 fi
@@ -30,9 +27,7 @@ ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/sys-kernel-debug.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/dev-mqueue.mount
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp.service
 ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/systemd-update-utmp-runlevel.service
-if [[ ${TARGET_DIR} != *"raspberrypi0cam"* ]]; then
-  ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
-fi
+ln -sf /dev/null "${TARGET_DIR}"/etc/systemd/system/network.service
 
 # Set os-release file
 SHOWMEWEBCAM_VERSION=$(support/scripts/setlocalversion "${BR2_EXTERNAL_PICAM_PATH}")
