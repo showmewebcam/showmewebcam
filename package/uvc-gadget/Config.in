@@ -1,0 +1,14 @@
+config BR2_PACKAGE_UVC_GADGET
+	bool "Libcamera UVC Gadget"
+	select BR2_PACKAGE_LIBCAMERA
+	select BR2_PACKAGE_LIBCAMERA_V4L2
+	select BR2_PACKAGE_LIBCAMERA_PIPELINE_RASPBERRYPI
+	select BR2_PACKAGE_LIBCAMERA_PIPELINE_UVCVIDEO
+	select BR2_PACKAGE_LIBV4L
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_PACKAGE_LIBJPEG
+	select BR2_PACKAGE_JPEG
+	help
+	  Install Libcamera UVC Gadget
+
+	  https://gitlab.freedesktop.org/camera/uvc-gadget

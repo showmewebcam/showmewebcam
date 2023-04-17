@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # Eventually we want to disable the serial interface by default
 # As it can be used as a persistence exploitation vector
 CONFIGURE_USB_SERIAL=false
@@ -17,7 +19,11 @@ VIDEO_FORMATS_USER_FILE=/boot/video_formats.txt
 
 CONFIG=/sys/kernel/config/usb_gadget/piwebcam
 mkdir -p "$CONFIG"
-cd "$CONFIG" || exit 1
+cd "$CONFIG"
+if [ $? -ne 0 ]; then
+  echo "Error creating usb gadget in configfs"
+  exit 1
+fi
 
 echo 0x1d6b > idVendor
 echo 0x0104 > idProduct
@@ -41,8 +47,8 @@ echo "Piwebcam"               > configs/c.1/strings/0x409/configuration
 echo 500                      > configs/c.1/MaxPower
 
 config_usb_serial () {
-  mkdir -p functions/acm.usb0
-  ln -s functions/acm.usb0 configs/c.1/acm.usb0
+  mkdir -p functions/acm.0
+  ln -s functions/acm.0 configs/c.1/acm.0
 }
 
 config_frame () {
@@ -51,7 +57,7 @@ config_frame () {
   WIDTH=$3
   HEIGHT=$4
 
-  FRAMEDIR="functions/uvc.usb0/streaming/$FORMAT/$NAME/${HEIGHT}p"
+  FRAMEDIR="functions/uvc.0/streaming/$FORMAT/$NAME/${HEIGHT}p"
 
   mkdir -p "$FRAMEDIR"
 
@@ -69,7 +75,7 @@ EOF
 }
 
 config_usb_webcam () {
-  mkdir -p functions/uvc.usb0/control/header/h
+  mkdir -p functions/uvc.0/control/header/h
 
   if [ -r $VIDEO_FORMATS_USER_FILE ] ; then
     FORMATS_FILE=$VIDEO_FORMATS_USER_FILE
@@ -87,14 +93,21 @@ config_usb_webcam () {
     config_frame "$VIDEO_FORMAT" "$HDR_DESC" "$X" "$Y"
   done
 
-  mkdir -p functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/mjpeg/m        functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/uncompressed/u functions/uvc.usb0/streaming/header/h
-  ln -s functions/uvc.usb0/streaming/header/h       functions/uvc.usb0/streaming/class/fs
-  ln -s functions/uvc.usb0/streaming/header/h       functions/uvc.usb0/streaming/class/hs
-  ln -s functions/uvc.usb0/control/header/h         functions/uvc.usb0/control/class/fs
+  mkdir -p functions/uvc.0/streaming/header/h
+  ln -s functions/uvc.0/streaming/mjpeg/m        functions/uvc.0/streaming/header/h
+  ln -s functions/uvc.0/streaming/uncompressed/u functions/uvc.0/streaming/header/h
+  ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/fs
+  ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/hs
+  ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/ss
+  ln -s functions/uvc.0/control/header/h         functions/uvc.0/control/class/fs
+  ln -s functions/uvc.0/control/header/h         functions/uvc.0/control/class/ss
 
-  ln -s functions/uvc.usb0 configs/c.1/uvc.usb0
+  # Set the packet size: uvc gadget max size is 3k...
+  echo 3072 > functions/uvc.0/streaming_maxpacket
+  echo 2048 > functions/uvc.0/streaming_maxpacket
+  echo 1024 > functions/uvc.0/streaming_maxpacket
+
+  ln -s functions/uvc.0 configs/c.1
 }
 
 # Check if camera is installed correctly
