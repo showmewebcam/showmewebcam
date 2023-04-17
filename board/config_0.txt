@@ -23,7 +23,7 @@ gpu_mem_512=100
 gpu_mem_1024=100
 
 # Enable OTG host mode
-dtoverlay=dwc2
+dtoverlay=dwc2,dr_mode=otg
 
 # Enable serial console
 enable_uart=1
@@ -34,4 +34,5 @@ boot_delay=0
 # Enable turbo mode during boot time
 initial_turbo=10
 
+# Allow libcamera to detect cameras automatically
 camera_auto_detect=1
