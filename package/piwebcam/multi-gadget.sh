@@ -94,8 +94,14 @@ config_usb_webcam () {
   done
 
   mkdir -p functions/uvc.0/streaming/header/h
-  ln -s functions/uvc.0/streaming/mjpeg/m        functions/uvc.0/streaming/header/h
-  ln -s functions/uvc.0/streaming/uncompressed/u functions/uvc.0/streaming/header/h
+
+  if grep "^mjpeg.*" $FORMATS_FILE; then
+    ln -s functions/uvc.0/streaming/mjpeg/m        functions/uvc.0/streaming/header/h
+  fi
+  if grep "^uncompressed.*" $FORMATS_FILE; then
+    ln -s functions/uvc.0/streaming/uncompressed/u functions/uvc.0/streaming/header/h
+  fi
+
   ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/fs
   ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/hs
   ln -s functions/uvc.0/streaming/header/h       functions/uvc.0/streaming/class/ss
