@@ -116,6 +116,8 @@ config_usb_webcam () {
   ln -s functions/uvc.0 configs/c.1
 }
 
+udevadm settle -t 5 || :
+
 # Check if camera is installed correctly
 if [ ! -e /dev/video0 ] ; then
   echo "I did not detect a camera connected to the Pi. Please check your hardware."
