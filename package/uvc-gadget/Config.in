@@ -9,6 +9,7 @@ config BR2_PACKAGE_UVC_GADGET
 	select BR2_PACKAGE_LIBJPEG
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_OPENSSL
 	help
 	  Install Libcamera UVC Gadget
 
