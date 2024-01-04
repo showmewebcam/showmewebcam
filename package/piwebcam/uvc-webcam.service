@@ -1,5 +1,5 @@
 [Unit]
-Description=Starts Raspberry Pi UVC webcam service
+Description=Raspberry Pi UVC webcam
 After=usb-gadget-config.service
 
 [Service]
@@ -7,7 +7,13 @@ ExecStart=/opt/uvc-webcam/start-webcam.sh
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=piwebcam
+NoNewPrivileges=yes
+SystemCallArchitectures=native
+ProtectKernelLogs=yes
+IPAddressDeny=any
 WorkingDirectory=/tmp
+Restart=always
+RestartSec=1
 
 [Install]
 WantedBy=basic.target
