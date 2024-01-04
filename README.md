@@ -97,6 +97,21 @@ $ screen /dev/tty.usbmodem13103 115200
 If the terminal is blank try pressing enter to see the login prompt. To exit
 the session, use `Ctrl-A \` (screen) or `Ctrl-A X` (minicom & picocom).
 
+Windows How-To:
+- Find the COM port
+- Download and open PuTTY
+- Select "Serial" and enter serial line COMx and speed 115200
+- Hit `Open`
+- The screen will be black if the connection is a success
+- `login`Enter
+- `root`Enter
+- `root`Enter
+- `/usr/bin/camera-ctl`Enter
+- And the menu should appear. 
+
+Navigate and change values with the cursor keys.
+
+
 **Warning**: This serial debug interface is automatically enabled and is controlled
 by the file called `enable-serial-debug` in the `/boot` folder. This is a potential
 security issue. For now, you should strongly consider disabling this feature by
