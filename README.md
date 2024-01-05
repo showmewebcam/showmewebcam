@@ -35,8 +35,27 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 
 ## Instructions
 
-- [Follow the Cytron tutorial](https://tutorial.cytron.io/2020/12/29/raspberry-pi-zero-usb-webcam/).
+ [Follow the archived Cytron tutorial](https://web.archive.org/web/20221008011400/https://tutorial.cytron.io/2020/12/29/raspberry-pi-zero-usb-webcam/).
+
+ 
+ Or enjoy this brief explanation for the Pi Zero W:
+- Download the latest image from https://github.com/showmewebcam/showmewebcam/releases/
+  - Check the filename carefully to match your hardware!
+- Open the Raspberry Pi Imager (https://github.com/raspberrypi/rpi-imager or https://www.raspberrypi.com/software/)
+- Scroll to the bottom of the list of images, and select "Open from my computer"
+- Select the downloaded image from your hard drive
+- Write to your SD card (even a very small card will work fine)
+  -(If you get an error about the SD card can't be opened/locked/"Error removing existing partitions" in Windows, use a different device (Flipper Zero) to format the card first, then retry)
+- Insert SD card into your prepared Pi Zero, with camera already installed
+- Connect to the middle (data) USB port and then your PC or phone
 - Smile & Enjoy!
+
+- Fault finding:
+  - "green red green then nothing" LED flash on a Pi0W on power-on means you've installed the Pi0 image!
+  - Check you're plugged into USB not PWR!
+  - On mobile phones, check your OTG works, or test the Pi Zero on another device
+  - On Windows, in Powershell, use "Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match 'USB' }" to see all USB devices, or search for "bluetooth and other device settings" on the taskbar
+  - Takes about 8 seconds to boot then enumerate fully on Windows 10
 
 ## Stable releases
 
@@ -78,13 +97,28 @@ $ screen /dev/tty.usbmodem13103 115200
 If the terminal is blank try pressing enter to see the login prompt. To exit
 the session, use `Ctrl-A \` (screen) or `Ctrl-A X` (minicom & picocom).
 
+Windows How-To:
+- Find the COM port
+- Download and open PuTTY
+- Select "Serial" and enter serial line COMx and speed 115200
+- Hit `Open`
+- The screen will be black if the connection is a success
+- `login`Enter
+- `root`Enter
+- `root`Enter
+- `/usr/bin/camera-ctl`Enter
+- And the menu should appear. 
+
+Navigate and change values with the cursor keys.
+
+
 **Warning**: This serial debug interface is automatically enabled and is controlled
 by the file called `enable-serial-debug` in the `/boot` folder. This is a potential
 security issue. For now, you should strongly consider disabling this feature by
 removing the file after you have finished customizing the webcam.
 
 
-### My camera doesn't show up on my host computer! What to do?
+### My camera doesn't show up on my host computer! What to do? Linux
 
 From version 1.80, on Linux, you can see what happens by watching `dmesg`
 before you plug in the webcam:
@@ -96,9 +130,16 @@ $ sudo dmesg -w
 If you only see the `ttyACM` device show up, but not the webcam, it's likely you
 have not plugged in the camera cable correctly, or the camera cable has gone bad.
 
-If you see nothing, maybe your USB cable is bad, or you have plugged in the cable
-to the wrong port.
+### My camera doesn't show up on my host computer! What to do? Windows 10/11
 
+On Windows, in Powershell, use 
+```powershell
+Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match 'USB' }
+```
+to see all USB devices, or search for "bluetooth and other device settings" on the taskbar
+
+If you see nothing, maybe your USB cable is bad, or you have plugged in the cable
+to the wrong port (on the Pi).
 
 ## Customizing camera settings
 
