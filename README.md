@@ -31,7 +31,7 @@ Show-me webcam is proudly powered by [peterbay's uvc-gadget](https://github.com/
 | ------------------------------ | ------- | ------- | ----------------- |
 | Pi Zero v1.3 (without Wifi)    | &check; | &check; | &check;           |
 | Pi Zero W (with Wifi)          | &check; | &check; | &check;           |
-| Pi 4+                          |         | &check; | &check;           |
+| Pi 4+                          | &check; | &check; | &check;           |
 
 ## Instructions
 
