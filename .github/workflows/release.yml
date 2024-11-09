@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: 'recursive'
@@ -43,7 +43,7 @@ jobs:
 
       - name: Cache Build
         id: restore-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             output
@@ -65,7 +65,7 @@ jobs:
           cp output/${{ matrix.raspberry }}/images/sdcard.img sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
 
       - name: Upload Image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
           path: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img
@@ -78,7 +78,7 @@ jobs:
 
       - name: Store Release Image
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: release
           path: sdcard-${{ matrix.raspberry }}-${{ env.SMW_VERSION }}.img.gz
@@ -90,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -116,7 +116,7 @@ jobs:
           body_path: CHANGELOG.md
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: release
 
